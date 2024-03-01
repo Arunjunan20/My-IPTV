@@ -1,4 +1,6 @@
-# Arunjunan-s-IPTV
+# Tamil-IPTV
+
+Arunjunan's IPTV
 
 IPTV especially focused on Tamil channels , Tamil local channels , Tamil overseas channels and also English movies channels.
 
