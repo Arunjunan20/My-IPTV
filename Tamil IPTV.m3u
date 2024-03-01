@@ -141,6 +141,9 @@ https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1809/output/manif
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_935/output/manifest.mpd
 #EXTINF:-1 tvg-id="812" tvg-logo="https://tatalogo.pages.dev/812.png" group-title="Sports",Eurosport HD
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1109/output/manifest.mpd
+
+
+
 #EXTINF:-1 tvg-id="587" tvg-logo="https://tatalogo.pages.dev/587.png" group-title="Kids",Super Hungama
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_781/output/manifest.mpd
 #EXTINF:-1 tvg-id="627" tvg-logo="https://tatalogo.pages.dev/627.png" group-title="Kids",Tata Play Fun Learn Junior
@@ -179,6 +182,10 @@ http://starshare.live:8080/live/53rumaiz87/7567new977/18456.ts
 https://teachublive.link/mac/create.php?id=1097664
 #EXTINF:-1 tvg-id="ts587" tvg-logo="https://i.ibb.co/RYsYthb/Screenshot-2024-01-08-172016.png" group-title="Kids",Hungama Tamil
 http://starshare.live:8080/live/53rumaiz87/7567new977/66162.ts
+
+
+
+
 #EXTINF:-1 tvg-id="789" tvg-logo="https://tatalogo.pages.dev/789.png" group-title="Movies",Tata Play Hollywood Local
 https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_980/output/manifest.mpd
 #EXTINF:-1 tvg-id="486" tvg-logo="https://tatalogo.pages.dev/486.png" group-title="Movies",Tata Play Bollywood Premiere
@@ -269,6 +276,9 @@ http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=155996&extensi
 #EXTVLCOPT:cache=17238
 #EXTVLCOPT:http-user-agent=Lavf53.32.100
 http://line.greatstar.me/play/live.php?mac=00:1a:79:c7:74:97&stream=155729&extension=ts
+
+
+
 #EXTINF:-1 tvg-id="641" tvg-logo="https://tatalogo.pages.dev/641.png" group-title="Lifestyle",Tata Play Cooking
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_876/output/manifest.mpd
 #EXTINF:-1 tvg-id="618" tvg-logo="https://tatalogo.pages.dev/618.png" group-title="Lifestyle",Tata Play Beauty
@@ -297,6 +307,10 @@ https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_154/output/manife
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_404/output/manifest.mpd
 #EXTINF:-1 tvg-id="55" tvg-logo="https://tatalogo.pages.dev/55.png" group-title="Lifestyle",Travelxp
 https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_366/output/manifest.mpd
+
+
+
+
 #EXTINF:-1 tvg-id="691" tvg-logo="https://tatalogo.pages.dev/691.png" group-title="News",DD News HD
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_932/output/manifest.mpd
 #EXTINF:-1 tvg-id="322" tvg-logo="https://tatalogo.pages.dev/322.png" group-title="News",DD News
