@@ -96,7 +96,7 @@ https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_494/output/manife
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_304/output/manifest.mpd
 #EXTINF:-1 tvg-id="521" tvg-logo="https://tatalogo.pages.dev/521.png" group-title="Entertainment",Sun TV HD
 http://xtv.ooo:8080/359052742/470428329/244553
-#EXTINF:-1 tvg-id="496" tvg-logo="" group-title="Tamil",Sun Music HD
+#EXTINF:-1 tvg-id="496" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/sun-music-hd.gif" group-title="Entertainment",Sun Music HD
 http://xtv.ooo:8080/359052742/470428329/244554
 #EXTINF:-1 tvg-id="496" tvg-logo="https://tatalogo.pages.dev/496.png" group-title="Entertainment",Star Vijay HD
 http://xtv.ooo:8080/359052742/470428329/244622
