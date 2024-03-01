@@ -79,9 +79,9 @@ http://xtv.ooo:8080/359052742/470428329/244522
 http://xtv.ooo:8080/359052742/470428329/244592
 #EXTINF:-1 tvg-id="ts49" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/vijay-super-hd.gif" group-title="Tamil",Vijay Super HD
 http://xtv.ooo:8080/359052742/470428329/244622
-#EXTINF:-1 tvg-id="521" tvg-logo="" group-title="Tamil",Zee Tamil HD
+#EXTINF:-1 tvg-id="521" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/zee-tamil-hd.gif" group-title="Tamil",Zee Tamil HD
 http://xtv.ooo:8080/359052742/470428329/244523
-#EXTINF:-1 tvg-id="496" tvg-logo="" group-title="Tamil",Zee Thirai
+#EXTINF:-1 tvg-id="496" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/zee-thirai.gif" group-title="Tamil",Zee Thirai
 http://xtv.ooo:8080/359052742/470428329/355
 #EXTINF:-1 tvg-id="496" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/adithya-tv.gif" group-title="Tamil",Adithya
 http://xtv.ooo:8080/359052742/470428329/24462
@@ -111,7 +111,7 @@ http://xtv.ooo:8080/359052742/470428329/244523
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_250/output/manifest.mpd
 #EXTINF:-1 tvg-id="235" tvg-logo="https://tatalogo.pages.dev/235.png" group-title="Sports",Star Sports 2 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_251/output/manifest.mpd
-#EXTINF:-1 tvg-id="235" tvg-logo="https://tatalogo.pages.dev/235.png" group-title="Sports",Star Sports 1 Tamil HD
+#EXTINF:-1 tvg-id="235" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/star-sports-1-tamil-hd.gif" group-title="Sports",Star Sports 1 Tamil HD
 http://xtv.ooo:8080/359052742/470428329/167574
 #EXTINF:-1 tvg-id="246" tvg-logo="https://tatalogo.pages.dev/246.png" group-title="Sports",Star Sports Select 1 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_413/output/manifest.mpd
@@ -121,24 +121,16 @@ https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_729/output/manife
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_146/output/manifest.mpd
 #EXTINF:-1 tvg-id="81" tvg-logo="https://tatalogo.pages.dev/81.png" group-title="Sports",SONY SPORTS TEN 1 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_256/output/manifest.mpd
-#EXTINF:-1 tvg-id="24" tvg-logo="https://tatalogo.pages.dev/24.png" group-title="Sports",Star Sports 1 Hindi HD
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_252/output/manifest.mpd
-#EXTINF:-1 tvg-id="170" tvg-logo="https://tatalogo.pages.dev/170.png" group-title="Sports",SONY SPORTS TEN 2
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_115/output/manifest.mpd
-#EXTINF:-1 tvg-id="150" tvg-logo="https://tatalogo.pages.dev/150.png" group-title="Sports",SONY SPORTS TEN 1
-https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_114/output/manifest.mpd
 #EXTINF:-1 tvg-id="464" tvg-logo="https://tatalogo.pages.dev/464.png" group-title="Sports",SONY SPORTS TEN 3 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_727/output/manifest.mpd
 #EXTINF:-1 tvg-id="462" tvg-logo="https://tatalogo.pages.dev/462.png" group-title="Sports",SONY SPORTS TEN 2 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_726/output/manifest.mpd
-#EXTINF:-1 tvg-id="171" tvg-logo="https://tatalogo.pages.dev/171.png" group-title="Sports",SONY SPORTS TEN 3
-https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_116/output/manifest.mpd
+#EXTINF:-1 tvg-id="462" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/sony-sports-ten-4-hd.gif" group-title="Sports",SONY SPORTS TEN 4 HD
+https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_726/output/manifest.mpd
 #EXTINF:-1 tvg-id="35" tvg-logo="https://tatalogo.pages.dev/35.png" group-title="Sports",SONY SPORTS TEN 5 HD
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_254/output/manifest.mpd
 #EXTINF:-1 tvg-id="980" tvg-logo="https://tatalogo.pages.dev/980.png" group-title="Sports",Sports 18 - 1
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1809/output/manifest.mpd
-#EXTINF:-1 tvg-id="693" tvg-logo="https://tatalogo.pages.dev/693.png" group-title="Sports",Eurosport
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_935/output/manifest.mpd
 #EXTINF:-1 tvg-id="812" tvg-logo="https://tatalogo.pages.dev/812.png" group-title="Sports",Eurosport HD
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1109/output/manifest.mpd
 
@@ -171,7 +163,7 @@ https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_365/output/manife
 #EXTINF:-1 tvg-id="144" tvg-logo="https://tatalogo.pages.dev/144.png" 
 #EXTINF:-1 tvg-id="239" tvg-logo="https://tatalogo.pages.dev/239.png" group-title="Kids",Pogo
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_406/output/manifest.mpd
-#EXTINF:-1 tvg-id="ts587" tvg-logo="https://i.ibb.co/RYsYthb/Screenshot-2024-01-08-172016.png" group-title="Kids",Hungama
+#EXTINF:-1 tvg-id="ts587" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/hungama-tv.gif" group-title="Kids",Hungama
 http://starshare.live:8080/live/53rumaiz87/7567new977/66162.ts
 
 
@@ -179,11 +171,11 @@ http://starshare.live:8080/live/53rumaiz87/7567new977/66162.ts
 
 #EXTINF:-1 tvg-id="789" tvg-logo="https://tatalogo.pages.dev/789.png" group-title="Movies",Tata Play Hollywood Local
 https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_980/output/manifest.mpd
+#EXTINF:-1 tvg-id="789" tvg-logo="https://www.tataplay.com/cms-assets/services/banners/2020-06/tata-sky-tamil-cinema-logo_0.png" group-title="Movies",Tata Play Tamil Cinema
+https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_980/output/manifest.mpd
 #EXTINF:-1 tvg-id="ts632" tvg-logo="https://i.postimg.cc/WpxKWWB0/image.jpg" tvg-name="Star Movies HD" group-title="Movies",Star Movies HD
 http://45.127.56.3:9698/live/Corpus-POL/SRV4/1/STAR-MOVIES-HD/video.m3u8
 
-#EXTINF:-1 tvg-id="558" tvg-logo="https://tatalogo.pages.dev/558.png" group-title="Movies",SONY PIX
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_200/output/manifest.mpd
 #EXTINF:-1 tvg-id="562" tvg-logo="https://tatalogo.pages.dev/562.png" group-title="Movies",Movies Now HD
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_563/output/manifest.mpd
 #EXTINF:-1 tvg-id="32" tvg-logo="https://tatalogo.pages.dev/32.png" group-title="Movies",SONY PIX HD
@@ -200,6 +192,7 @@ http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=1116484&extens
 #EXTVLCOPT:cache=17238
 #EXTVLCOPT:http-user-agent=Lavf53.32.100
 http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=282639&extension=ts
+
 
 
 #EXTINF:-1 tvg-id="367" tvg-logo="https://tatalogo.pages.dev/367.png" group-title="Lifestyle",FOX Life HD
