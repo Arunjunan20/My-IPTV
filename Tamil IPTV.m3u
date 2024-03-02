@@ -37,8 +37,6 @@ http://xtv.ooo:8080/359052742/470428329/244555
 http://xtv.ooo:8080/359052742/470428329/244578
 #EXTINF:-1 tvg-id="201" tvg-logo="https://tatalogo.pages.dev/201.png" group-title="Tamil",J Movies
 http://xtv.ooo:8080/359052742/470428329/244574
-#EXTINF:-1 tvg-id="444" tvg-logo="https://tatalogo.pages.dev/444.png" group-title="Tamil",Travelxp Tamil
-http://xtv.ooo:8080/359052742/470428329/244634
 #EXTINF:-1 tvg-id="425" tvg-logo="https://tatalogo.pages.dev/425.png" group-title="Tamil",Raj Musix
 http://xtv.ooo:8080/359052742/470428329/244584
 #EXTINF:-1 tvg-id="647" tvg-logo="https://tatalogo.pages.dev/647.png" group-title="Tamil",Isaiaruvi
@@ -61,7 +59,8 @@ http://xtv.ooo:8080/359052742/470428329/244523
 http://xtv.ooo:8080/359052742/470428329/355
 #EXTINF:-1 tvg-id="496" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/adithya-tv.gif" group-title="Tamil",Adithya
 http://xtv.ooo:8080/359052742/470428329/24462
-
+#EXTINF:-1 tvg-id="496" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/vijay-takkar.gif" group-title="Tamil",Vijay Takkar
+http://xtv.ooo:8080/359052742/470428329/24462
 
 =============================ENTERTAINMENT============================
 
@@ -80,7 +79,10 @@ http://xtv.ooo:8080/359052742/470428329/244622
 http://xtv.ooo:8080/359052742/470428329/244552
 #EXTINF:-1 tvg-id="521" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/zee-tamil-hd.gif" group-title="Entertainment",Zee Tamil HD
 http://xtv.ooo:8080/359052742/470428329/244523
-
+#EXTINF:-1 tvg-id="526" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/zee-cafe.gif" group-title="Entertainment",Zee Cafe HD
+http://xtv.ooo:8080/359052742/470428329/244523
+#EXTINF:-1 tvg-id="529" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/%26prive-hd.gif" group-title="Entertainment",&prive HD
+http://xtv.ooo:8080/359052742/470428329/244523
 
 ================================SPORTS================================
 
@@ -161,9 +163,9 @@ https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_636/output/manife
 https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_259/output/manifest.mpd
 #EXTINF:-1 tvg-id="174" tvg-logo="https://tatalogo.pages.dev/174.png" group-title="Movies",Romedy Now
 https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_236/output/manifest.mpd
-#EXTINF:-1 tvg-id="ts632" tvg-logo="" group-title="Movies",& Flix
+#EXTINF:-1 tvg-id="ts632" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/%26flix-hd.gif" group-title="Movies",& Flix HD
 http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=1116484&extension=ts
-#EXTINF:-1 tvg-id="ts632" tvg-logo="" group-title="Movies",Star Movies Select HD
+#EXTINF:-1 tvg-id="ts632" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/star-movies-select-hd.gif" group-title="Movies",Star Movies Select HD
 http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=282639&extension=ts
 
 
@@ -172,8 +174,8 @@ http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=282639&extensi
 
 #EXTINF:-1 tvg-id="367" tvg-logo="https://tatalogo.pages.dev/367.png" group-title="Knowledge",FOX Life HD
 https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_544/output/manifest.mpd
-" group-title="Lifestyle",TLC HD
-https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_780/output/manifest.mpd
+#EXTINF:-1 tvg-id="444" tvg-logo="https://tatalogo.pages.dev/444.png" group-title="Knowledge",Travelxp Tamil
+http://xtv.ooo:8080/359052742/470428329/244634
 #EXTINF:-1 tvg-id="136" tvg-logo="https://tatalogo.pages.dev/136.png" group-title="Knowledge",GOOD TiMES
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_111/output/manifest.mpd
 #EXTINF:-1 tvg-id="117" tvg-logo="https://tatalogo.pages.dev/117.png" group-title="Knowledge",Food Food
