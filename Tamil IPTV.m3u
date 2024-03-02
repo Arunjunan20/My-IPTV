@@ -39,30 +39,6 @@ http://xtv.ooo:8080/359052742/470428329/244578
 http://xtv.ooo:8080/359052742/470428329/244574
 #EXTINF:-1 tvg-id="444" tvg-logo="https://tatalogo.pages.dev/444.png" group-title="Tamil",Travelxp Tamil
 http://xtv.ooo:8080/359052742/470428329/244634
-#EXTINF:-1 tvg-id="220" tvg-logo="https://tatalogo.pages.dev/220.png" group-title="Tamil",Puthiya Thalaimurai
-http://xtv.ooo:8080/359052742/470428329/244567
-#EXTINF:-1 tvg-id="198" tvg-logo="https://tatalogo.pages.dev/198.png" group-title="Tamil",Jaya Plus
-http://xtv.ooo:8080/359052742/470428329/244575
-#EXTINF:-1 tvg-id="509" tvg-logo="https://tatalogo.pages.dev/509.png" group-title="Tamil",Polimer News
-http://xtv.ooo:8080/359052742/470428329/244537
-#EXTINF:-1 tvg-id="524" tvg-logo="https://tatalogo.pages.dev/524.png" group-title="Tamil",Thanthi TV
-http://xtv.ooo:8080/359052742/470428329/244535
-#EXTINF:-1 tvg-id="44" tvg-logo="https://tatalogo.pages.dev/44.png" group-title="Tamil",Seithigal TV
-http://xtv.ooo:8080/359052742/470428329/244581
-#EXTINF:-1 tvg-id="58" tvg-logo="https://tatalogo.pages.dev/58.png" group-title="Tamil",News18 Tamil Nadu
-http://xtv.ooo:8080/359052742/470428329/355755
-#EXTINF:-1 tvg-id="702" tvg-logo="https://tatalogo.pages.dev/702.png" group-title="Tamil",News J
-http://xtv.ooo:8080/359052742/470428329/355900
-#EXTINF:-1 tvg-id="455" tvg-logo="https://tatalogo.pages.dev/455.png" group-title="Tamil",Sathiyam TV
-http://xtv.ooo:8080/359052742/470428329/244527
-#EXTINF:-1 tvg-id="968" tvg-logo="https://tatalogo.pages.dev/968.png" group-title="Tamil",News Tamil 24x7
-http://xtv.ooo:8080/359052742/470428329/356054
-#EXTINF:-1 tvg-id="199" tvg-logo="https://tatalogo.pages.dev/199.png" group-title="Tamil",Jaya Max
-http://xtv.ooo:8080/359052742/470428329/244573
-#EXTINF:-1 tvg-id="391" tvg-logo="https://tatalogo.pages.dev/391.png" group-title="Tamil",MalaiMurasu Seithigal
-http://xtv.ooo:8080/359052742/470428329/246192
-#EXTINF:-1 tvg-id="525" tvg-logo="https://tatalogo.pages.dev/525.png" group-title="Tamil",Raj News Tamil
-http://xtv.ooo:8080/359052742/470428329/244585
 #EXTINF:-1 tvg-id="425" tvg-logo="https://tatalogo.pages.dev/425.png" group-title="Tamil",Raj Musix
 http://xtv.ooo:8080/359052742/470428329/244584
 #EXTINF:-1 tvg-id="647" tvg-logo="https://tatalogo.pages.dev/647.png" group-title="Tamil",Isaiaruvi
@@ -87,7 +63,7 @@ http://xtv.ooo:8080/359052742/470428329/355
 http://xtv.ooo:8080/359052742/470428329/24462
 
 
-================================ENTERTAINMENT================================
+=============================ENTERTAINMENT============================
 
 
 #EXTINF:-1 tvg-id="307" tvg-logo="https://tatalogo.pages.dev/307.png" group-title="Entertainment",Comedy Central HD
@@ -105,6 +81,8 @@ http://xtv.ooo:8080/359052742/470428329/244552
 #EXTINF:-1 tvg-id="521" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/zee-tamil-hd.gif" group-title="Entertainment",Zee Tamil HD
 http://xtv.ooo:8080/359052742/470428329/244523
 
+
+================================SPORTS================================
 
 
 #EXTINF:-1 tvg-id="78" tvg-logo="https://tatalogo.pages.dev/78.png" group-title="Sports",Star Sports 1 HD
@@ -135,38 +113,36 @@ https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1809/output/manif
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1109/output/manifest.mpd
 
 
+================================KIDS================================
+
 
 #EXTINF:-1 tvg-id="587" tvg-logo="https://tatalogo.pages.dev/587.png" group-title="Kids",Super Hungama
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_781/output/manifest.mpd
-
 #EXTINF:-1 tvg-id="138" tvg-logo="https://tatalogo.pages.dev/138.png" group-title="Kids",Nick
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_117/output/manifest.mpd
 #EXTINF:-1 tvg-id="114" tvg-logo="https://tatalogo.pages.dev/114.png" group-title="Kids",Disney
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_166/output/manifest.mpd
 #EXTINF:-1 tvg-id="433" tvg-logo="https://tatalogo.pages.dev/433.png" group-title="Kids",Nick HD+
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_663/output/manifest.mpd
-
 #EXTINF:-1 tvg-id="238" tvg-logo="https://tatalogo.pages.dev/238.png" group-title="Kids",Cartoon Network
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_405/output/manifest.mpd
 #EXTINF:-1 tvg-id="681" tvg-logo="https://tatalogo.pages.dev/681.png" group-title="Kids",Cartoon Network HD+
 https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_925/output/manifest.mpd
 #EXTINF:-1 tvg-id="119" tvg-logo="https://tatalogo.pages.dev/119.png" group-title="Kids",Discovery Kids
 https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_130/output/manifest.mpd
-
 #EXTINF:-1 tvg-id="127" tvg-logo="https://tatalogo.pages.dev/127.png" group-title="Kids",Sonic Nickelodeon
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_169/output/manifest.mpd
 #EXTINF:-1 tvg-id="118" tvg-logo="https://tatalogo.pages.dev/118.png" group-title="Kids",Nick Jr
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_168/output/manifest.mpd
 #EXTINF:-1 tvg-id="45" tvg-logo="https://tatalogo.pages.dev/45.png" group-title="Kids",SONY YAY!
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_365/output/manifest.mpd
-#EXTINF:-1 tvg-id="816" tvg-logo="https://tatalogo.pages.dev/816.png" 
-#EXTINF:-1 tvg-id="144" tvg-logo="https://tatalogo.pages.dev/144.png" 
 #EXTINF:-1 tvg-id="239" tvg-logo="https://tatalogo.pages.dev/239.png" group-title="Kids",Pogo
 https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_406/output/manifest.mpd
 #EXTINF:-1 tvg-id="ts587" tvg-logo="https://www.tataplay.com/s3-api/v1/assets/channels/hungama-tv.gif" group-title="Kids",Hungama
 http://starshare.live:8080/live/53rumaiz87/7567new977/66162.ts
 
 
+================================MOVIES================================
 
 
 #EXTINF:-1 tvg-id="789" tvg-logo="https://tatalogo.pages.dev/789.png" group-title="Movies",Tata Play Hollywood Local
@@ -175,7 +151,6 @@ https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_980/output/manife
 https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_980/output/manifest.mpd
 #EXTINF:-1 tvg-id="ts632" tvg-logo="https://i.postimg.cc/WpxKWWB0/image.jpg" tvg-name="Star Movies HD" group-title="Movies",Star Movies HD
 http://45.127.56.3:9698/live/Corpus-POL/SRV4/1/STAR-MOVIES-HD/video.m3u8
-
 #EXTINF:-1 tvg-id="562" tvg-logo="https://tatalogo.pages.dev/562.png" group-title="Movies",Movies Now HD
 https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_563/output/manifest.mpd
 #EXTINF:-1 tvg-id="32" tvg-logo="https://tatalogo.pages.dev/32.png" group-title="Movies",SONY PIX HD
@@ -188,11 +163,13 @@ https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_259/output/manife
 https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_236/output/manifest.mpd
 #EXTINF:-1 tvg-id="ts632" tvg-logo="https://i.ibb.co/RYsYthb/Screenshot-2024-01-08-172016.png" group-title="Movies",& Flix
 http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=1116484&extension=ts
-#EXTINF:-1 tvg-id="ts632" tvg-logo="https://i.ibb.co/RYsYthb/Screenshot-2024-01-08-172016.png" group-title="Movies",Star Movies
+#EXTINF:-1 tvg-id="ts632" tvg-logo="https://i.ibb.co/RYsYthb/Screenshot-2024-01-08-172016.png" group-title="Movies",Star Movies Select HD
 #EXTVLCOPT:cache=17238
 #EXTVLCOPT:http-user-agent=Lavf53.32.100
 http://mag.greatott.me/play/live.php?mac=00:1a:79:17:a5:fd&stream=282639&extension=ts
 
+
+================================LIFESTYLE================================
 
 
 #EXTINF:-1 tvg-id="367" tvg-logo="https://tatalogo.pages.dev/367.png" group-title="Lifestyle",FOX Life HD
@@ -207,143 +184,30 @@ https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_154/output/manife
 https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_366/output/manifest.mpd
 
 
+================================NEWS================================
 
 
-#EXTINF:-1 tvg-id="691" tvg-logo="https://tatalogo.pages.dev/691.png" group-title="News",DD News HD
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_932/output/manifest.mpd
-#EXTINF:-1 tvg-id="322" tvg-logo="https://tatalogo.pages.dev/322.png" group-title="News",DD News
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_517/output/manifest.mpd
-#EXTINF:-1 tvg-id="179" tvg-logo="https://tatalogo.pages.dev/179.png" group-title="News",NDTV India
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_104/output/manifest.mpd
-#EXTINF:-1 tvg-id="177" tvg-logo="https://tatalogo.pages.dev/177.png" group-title="News",ABP News
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_165/output/manifest.mpd
-#EXTINF:-1 tvg-id="153" tvg-logo="https://tatalogo.pages.dev/153.png" group-title="News",Aaj Tak
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_191/output/manifest.mpd
-#EXTINF:-1 tvg-id="689" tvg-logo="https://tatalogo.pages.dev/689.png" group-title="News",Aaj Tak HD
-https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_930/output/manifest.mpd
-#EXTINF:-1 tvg-id="104" tvg-logo="https://tatalogo.pages.dev/104.png" group-title="News",India TV
-https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_148/output/manifest.mpd
-#EXTINF:-1 tvg-id="209" tvg-logo="https://tatalogo.pages.dev/209.png" group-title="News",News 24
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_308/output/manifest.mpd
-#EXTINF:-1 tvg-id="106" tvg-logo="https://tatalogo.pages.dev/106.png" group-title="News",News18 India
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_149/output/manifest.mpd
-#EXTINF:-1 tvg-id="183" tvg-logo="https://tatalogo.pages.dev/183.png" group-title="News",India News
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_150/output/manifest.mpd
-#EXTINF:-1 tvg-id="36" tvg-logo="https://tatalogo.pages.dev/36.png" group-title="News",News Nation
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_309/output/manifest.mpd
-#EXTINF:-1 tvg-id="932" tvg-logo="https://tatalogo.pages.dev/932.png" group-title="News",Times Now Navbharat HD
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1327/output/manifest.mpd
-#EXTINF:-1 tvg-id="966" tvg-logo="https://tatalogo.pages.dev/966.png" group-title="News",Times Now Navbharat
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1791/output/manifest.mpd
-#EXTINF:-1 tvg-id="485" tvg-logo="https://tatalogo.pages.dev/485.png" group-title="News",TOTAL TV
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_785/output/manifest.mpd
-#EXTINF:-1 tvg-id="831" tvg-logo="https://tatalogo.pages.dev/831.png" group-title="News",News India 24x7
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1125/output/manifest.mpd
-#EXTINF:-1 tvg-id="475" tvg-logo="https://tatalogo.pages.dev/475.png" group-title="News",Sudarshan News
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_754/output/manifest.mpd
-#EXTINF:-1 tvg-id="286" tvg-logo="https://tatalogo.pages.dev/286.png" group-title="News",APN News
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_459/output/manifest.mpd
-#EXTINF:-1 tvg-id="950" tvg-logo="https://tatalogo.pages.dev/950.png" group-title="News",ET Now Swadesh
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1781/output/manifest.mpd
-#EXTINF:-1 tvg-id="685" tvg-logo="https://tatalogo.pages.dev/685.png" group-title="News",India Voice
-https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_922/output/manifest.mpd
-#EXTINF:-1 tvg-id="344" tvg-logo="https://tatalogo.pages.dev/344.png" group-title="News",Hindi Khabar
-https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_564/output/manifest.mpd
-#EXTINF:-1 tvg-id="414" tvg-logo="https://tatalogo.pages.dev/414.png" group-title="News",News 1 India
-https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_658/output/manifest.mpd
-#EXTINF:-1 tvg-id="291" tvg-logo="https://tatalogo.pages.dev/291.png" group-title="News",Bharat Samachar
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_475/output/manifest.mpd
-#EXTINF:-1 tvg-id="384" tvg-logo="https://tatalogo.pages.dev/384.png" group-title="News",Khabarain Abhi Tak
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_596/output/manifest.mpd
-#EXTINF:-1 tvg-id="441" tvg-logo="https://tatalogo.pages.dev/441.png" group-title="News",Samay
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_703/output/manifest.mpd
-#EXTINF:-1 tvg-id="848" tvg-logo="https://tatalogo.pages.dev/848.png" group-title="News",Network 10
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1136/output/manifest.mpd
-#EXTINF:-1 tvg-id="278" tvg-logo="https://tatalogo.pages.dev/278.png" group-title="News",Good News Today
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_434/output/manifest.mpd
-#EXTINF:-1 tvg-id="212" tvg-logo="https://tatalogo.pages.dev/212.png" group-title="News",Sansad TV - Rajya Sabha
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_311/output/manifest.mpd
-#EXTINF:-1 tvg-id="213" tvg-logo="https://tatalogo.pages.dev/213.png" group-title="News",Sansad TV
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_281/output/manifest.mpd
-#EXTINF:-1 tvg-id="208" tvg-logo="https://tatalogo.pages.dev/208.png" group-title="News",NDTV 24x7
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_107/output/manifest.mpd
-#EXTINF:-1 tvg-id="547" tvg-logo="https://tatalogo.pages.dev/547.png" group-title="News",Times Now World
-https://bpprod2catchup.akamaized.net/bpk-tv/irdeto_com_Channel_779/output/manifest.mpd
-#EXTINF:-1 tvg-id="204" tvg-logo="https://tatalogo.pages.dev/204.png" group-title="News",CNBC Awaaz
-https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_147/output/manifest.mpd
-#EXTINF:-1 tvg-id="90" tvg-logo="https://tatalogo.pages.dev/90.png" group-title="News",TIMES NOW
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_162/output/manifest.mpd
-#EXTINF:-1 tvg-id="206" tvg-logo="https://tatalogo.pages.dev/206.png" group-title="News",CNN News18
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_108/output/manifest.mpd
-#EXTINF:-1 tvg-id="1" tvg-logo="https://tatalogo.pages.dev/1.png" group-title="News",INDIA TODAY
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_221/output/manifest.mpd
-#EXTINF:-1 tvg-id="591" tvg-logo="https://tatalogo.pages.dev/591.png" group-title="News",MIRROR NOW
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_615/output/manifest.mpd
-#EXTINF:-1 tvg-id="304" tvg-logo="https://tatalogo.pages.dev/304.png" group-title="News",CNBC TV18 Prime HD
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_488/output/manifest.mpd
-#EXTINF:-1 tvg-id="255" tvg-logo="https://tatalogo.pages.dev/255.png" group-title="News",WION
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_422/output/manifest.mpd
-#EXTINF:-1 tvg-id="324" tvg-logo="https://tatalogo.pages.dev/324.png" group-title="News",DD India
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_508/output/manifest.mpd
-#EXTINF:-1 tvg-id="72" tvg-logo="https://tatalogo.pages.dev/72.png" group-title="News",REPUBLIC TV
-https://vg-republictataplay.akamaized.net/v1/dash/611d79b11b77e2f571934fd80ca1413453772ac7/vglive-sk-380287/index.mpd
-#EXTINF:-1 tvg-id="93" tvg-logo="https://tatalogo.pages.dev/93.png" group-title="News",NDTV Profit Prime
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_110/output/manifest.mpd
-#EXTINF:-1 tvg-id="168" tvg-logo="https://tatalogo.pages.dev/168.png" group-title="News",CNBC-TV18
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_109/output/manifest.mpd
-#EXTINF:-1 tvg-id="88" tvg-logo="https://tatalogo.pages.dev/88.png" group-title="News",ET NOW
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_163/output/manifest.mpd
-#EXTINF:-1 tvg-id="243" tvg-logo="https://tatalogo.pages.dev/243.png" group-title="News",CNN
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_410/output/manifest.mpd
-#EXTINF:-1 tvg-id="157" tvg-logo="https://tatalogo.pages.dev/157.png" group-title="News",Channel News Asia
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_220/output/manifest.mpd
-#EXTINF:-1 tvg-id="65" tvg-logo="https://tatalogo.pages.dev/65.png" group-title="News",TV5 Monde Asie
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_377/output/manifest.mpd
-#EXTINF:-1 tvg-id="131" tvg-logo="https://tatalogo.pages.dev/131.png" group-title="News",France 24
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_241/output/manifest.mpd
-#EXTINF:-1 tvg-id="105" tvg-logo="https://tatalogo.pages.dev/105.png" group-title="News",Australia TV
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_239/output/manifest.mpd
-#EXTINF:-1 tvg-id="188" tvg-logo="https://tatalogo.pages.dev/188.png" group-title="News",BBC News
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_151/output/manifest.mpd
-#EXTINF:-1 tvg-id="60" tvg-logo="https://tatalogo.pages.dev/60.png" group-title="News",DW
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_376/output/manifest.mpd
-#EXTINF:-1 tvg-id="98" tvg-logo="https://tatalogo.pages.dev/98.png" group-title="News",Russia Today
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_238/output/manifest.mpd
-#EXTINF:-1 tvg-id="976" tvg-logo="https://tatalogo.pages.dev/976.png" group-title="News",NHK World Japan
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1804/output/manifest.mpd
-#EXTINF:-1 tvg-id="613" tvg-logo="https://tatalogo.pages.dev/613.png" group-title="News",News State UP Uttarakhand
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_661/output/manifest.mpd
-#EXTINF:-1 tvg-id="30" tvg-logo="https://tatalogo.pages.dev/30.png" group-title="News",India News UP UK
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_361/output/manifest.mpd
-#EXTINF:-1 tvg-id="643" tvg-logo="https://tatalogo.pages.dev/643.png" group-title="News",News State MP CG
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_878/output/manifest.mpd
-#EXTINF:-1 tvg-id="222" tvg-logo="https://tatalogo.pages.dev/222.png" group-title="News",India News MP CG
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_359/output/manifest.mpd
-#EXTINF:-1 tvg-id="902" tvg-logo="https://tatalogo.pages.dev/902.png" group-title="News",News 24 Madhyapradesh Chattisgarh
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1310/output/manifest.mpd
-#EXTINF:-1 tvg-id="577" tvg-logo="https://tatalogo.pages.dev/577.png" group-title="News",Swaraj Express SMBC
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_719/output/manifest.mpd
-#EXTINF:-1 tvg-id="14" tvg-logo="https://tatalogo.pages.dev/14.png" group-title="News",India News Rajasthan
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_360/output/manifest.mpd
-#EXTINF:-1 tvg-id="890" tvg-logo="https://tatalogo.pages.dev/890.png" group-title="News",Republic Bangla
-https://vg-republictataplay.akamaized.net/v1/dash/611d79b11b77e2f571934fd80ca1413453772ac7/vglive-sk-323611/index.mpd
-#EXTINF:-1 tvg-id="1118" tvg-logo="https://tatalogo.pages.dev/1118.png" group-title="News",News 360
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1920/output/manifest.mpd
-#EXTINF:-1 tvg-id="1087" tvg-logo="https://tatalogo.pages.dev/1087.png" group-title="News",PRAVEG
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_1899/output/manifest.mpd
-#EXTINF:-1 tvg-id="232" tvg-logo="https://tatalogo.pages.dev/232.png" group-title="News",News18 Punjab Haryana
-https://bpprod4catchup.akamaized.net/bpk-tv/irdeto_com_Channel_313/output/manifest.mpd
-#EXTINF:-1 tvg-id="13" tvg-logo="https://tatalogo.pages.dev/13.png" group-title="News",India News Haryana
-https://bpprod7catchup.akamaized.net/bpk-tv/irdeto_com_Channel_280/output/manifest.mpd
-#EXTINF:-1 tvg-id="371" tvg-logo="https://tatalogo.pages.dev/371.png" group-title="News",Janta TV
-https://bpprod1catchup.akamaized.net/bpk-tv/irdeto_com_Channel_585/output/manifest.mpd
-#EXTINF:-1 tvg-id="401" tvg-logo="https://tatalogo.pages.dev/401.png" group-title="News",MH One News
-https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_626/output/manifest.mpd
-#EXTINF:-1 tvg-id="910" tvg-logo="https://tatalogo.pages.dev/910.png" group-title="News",C News Bharat
-https://cable18tataplay.akamaized.net/cnews/cnews/index.m3u8
-#EXTINF:-1 tvg-id="893" tvg-logo="https://tatalogo.pages.dev/893.png" group-title="News",Valam TV
-https://delta45tatasky.akamaized.net/out/i/1378.mpd
-#EXTINF:-1 tvg-id="892" tvg-logo="https://tatalogo.pages.dev/892.png" group-title="News",Samara News
-https://delta45tatasky.akamaized.net/out/i/767.mpd
-#EXTINF:-1 tvg-id="1079" tvg-logo="https://tatalogo.pages.dev/1079.png" group-title="News",TTN 24
-https://delta45tatasky.akamaized.net/out/i/1327.mpd
+#EXTINF:-1 tvg-id="220" tvg-logo="https://tatalogo.pages.dev/220.png" group-title="News",Puthiya Thalaimurai
+http://xtv.ooo:8080/359052742/470428329/244567
+#EXTINF:-1 tvg-id="198" tvg-logo="https://tatalogo.pages.dev/198.png" group-title="News",Jaya Plus
+http://xtv.ooo:8080/359052742/470428329/244575
+#EXTINF:-1 tvg-id="509" tvg-logo="https://tatalogo.pages.dev/509.png" group-title="News",Polimer News
+http://xtv.ooo:8080/359052742/470428329/244537
+#EXTINF:-1 tvg-id="524" tvg-logo="https://tatalogo.pages.dev/524.png" group-title="News",Thanthi TV
+http://xtv.ooo:8080/359052742/470428329/244535
+#EXTINF:-1 tvg-id="44" tvg-logo="https://tatalogo.pages.dev/44.png" group-title="News",Seithigal TV
+http://xtv.ooo:8080/359052742/470428329/244581
+#EXTINF:-1 tvg-id="58" tvg-logo="https://tatalogo.pages.dev/58.png" group-title="News",News18 Tamil Nadu
+http://xtv.ooo:8080/359052742/470428329/355755
+#EXTINF:-1 tvg-id="702" tvg-logo="https://tatalogo.pages.dev/702.png" group-title="News",News J
+http://xtv.ooo:8080/359052742/470428329/355900
+#EXTINF:-1 tvg-id="455" tvg-logo="https://tatalogo.pages.dev/455.png" group-title="News",Sathiyam TV
+http://xtv.ooo:8080/359052742/470428329/244527
+#EXTINF:-1 tvg-id="968" tvg-logo="https://tatalogo.pages.dev/968.png" group-title="News",News Tamil 24x7
+http://xtv.ooo:8080/359052742/470428329/356054
+#EXTINF:-1 tvg-id="199" tvg-logo="https://tatalogo.pages.dev/199.png" group-title="News",Jaya Max
+http://xtv.ooo:8080/359052742/470428329/244573
+#EXTINF:-1 tvg-id="391" tvg-logo="https://tatalogo.pages.dev/391.png" group-title="News",MalaiMurasu Seithigal
+http://xtv.ooo:8080/359052742/470428329/246192
+#EXTINF:-1 tvg-id="525" tvg-logo="https://tatalogo.pages.dev/525.png" group-title="News",Raj News Tamil
+http://xtv.ooo:8080/359052742/470428329/244585
