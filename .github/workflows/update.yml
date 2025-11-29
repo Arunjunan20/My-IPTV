@@ -36,6 +36,7 @@ jobs:
             {"name": "Sun TV HD", "group": "Regional Tamil"},
             {"name": "Sun Music HD", "group": "Regional Tamil"},
             {"name": "KTV HD", "group": "Movies"},
+            {"name": "Sun Life", "group": "Regional Tamil"},
             {"name": "Raj TV", "group": "Regional Tamil"},
             {"name": "Puthu Yugam", "group": "Tamil"},
             {"name": "Thanthi One", "group": "Tamil"},
