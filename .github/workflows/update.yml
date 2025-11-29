@@ -10,7 +10,6 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    # UPDATED: Run every 2 hours (00:00, 02:00, 04:00...)
     - cron: '0 */2 * * *'
 
 jobs:
@@ -36,7 +35,7 @@ jobs:
           TARGET_CHANNELS='[
             {"name": "Sun TV HD", "group": "Regional Tamil"},
             {"name": "Sun Music HD", "group": "Regional Tamil"},
-            {"name": "KTV HD", "group": "Regional Tamil"},
+            {"name": "KTV HD", "group": "Movies"},
             {"name": "Raj TV", "group": "Regional Tamil"},
             {"name": "Puthu Yugam", "group": "Tamil"},
             {"name": "Thanthi One", "group": "Tamil"},
@@ -48,7 +47,7 @@ jobs:
             {"name": "Colors Infinity HD", "group": "Movies"},
             {"name": "Sonic Hindi", "group": "Kids"},
             {"name": "Cartoon Network", "group": "Kids"},
-            {"name": "CN HD+ English", "group": "Infotainment"},
+            {"name": "CN HD+ English", "group": "Kids"},
             {"name": "Nick Jr", "group": "Kids"},
             {"name": "Nick HD+", "group": "Kids"},
             {"name": "Nick Hindi", "group": "Kids"},
@@ -65,11 +64,11 @@ jobs:
           ]'
 
           # 2. Fetch Source JSON
-          echo "📥 Fetching JSON..."
+          echo " Fetching JSON..."
           JSON=$(curl -fsSL --max-time 30 "$JSON_URL") || { echo "❌ Fetch failed"; exit 1; }
 
           # 3. Generate Formatted Content
-          echo "⚙️ Generating channel block..."
+          echo " Generating channel block..."
           echo "$JSON" | jq -r --argjson list "$TARGET_CHANNELS" '
             def channels:
               if type == "array" then .
