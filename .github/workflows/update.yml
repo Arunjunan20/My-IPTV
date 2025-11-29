@@ -1,4 +1,4 @@
-name: Auto-Update index.html
+name: Auto-Update index.html (Jio)
 
 concurrency:
   group: auto-update-index
@@ -10,7 +10,8 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */3 * * *' # Runs every 3 hours
+    # UPDATED: Run every 2 hours (00:00, 02:00, 04:00...)
+    - cron: '0 */2 * * *'
 
 jobs:
   update:
@@ -31,37 +32,43 @@ jobs:
         run: |
           set -euo pipefail
 
-          # 1. Your Jio Channel List
+          # 1. Target Channel List
           TARGET_CHANNELS='[
-            {"name": "Raj News 24x7", "group": "News"},
+            {"name": "Sun TV HD", "group": "Regional Tamil"},
+            {"name": "Sun Music HD", "group": "Regional Tamil"},
+            {"name": "KTV HD", "group": "Regional Tamil"},
+            {"name": "Raj TV", "group": "Regional Tamil"},
+            {"name": "Puthu Yugam", "group": "Tamil"},
+            {"name": "Thanthi One", "group": "Tamil"},
+            {"name": "Jothi TV", "group": "Tamil"},
+            {"name": "D Tamil", "group": "Regional Tamil"},
+            {"name": "Travelxp Tamil", "group": "Regional Tamil"},
+            {"name": "Raj Musix", "group": "Music"},
+            {"name": "Tunes 6", "group": "Music"},
+            {"name": "Colors Infinity HD", "group": "Movies"},
             {"name": "Sonic Hindi", "group": "Kids"},
             {"name": "Cartoon Network", "group": "Kids"},
-            {"name": "Discovery Tamil", "group": "Regional Tamil"},
-            {"name": "Pogo", "group": "Kids"},
-            {"name": "Tamil Janam", "group": "News"},
-            {"name": "Jaya Plus", "group": "News"},
-            {"name": "Animal Planet HD World", "group": "Infotainment"},
-            {"name": "Eurosport HD", "group": "Sports"},
+            {"name": "CN HD+ English", "group": "Infotainment"},
             {"name": "Nick Jr", "group": "Kids"},
             {"name": "Nick HD+", "group": "Kids"},
             {"name": "Nick Hindi", "group": "Kids"},
+            {"name": "Pogo", "group": "Kids"},
+            {"name": "Raj News 24x7", "group": "News"},
+            {"name": "Tamil Janam", "group": "News"},
+            {"name": "Jaya Plus", "group": "News"},
+            {"name": "History TV18 HD", "group": "Infotainment"},
+            {"name": "Animal Planet HD World", "group": "Infotainment"},
             {"name": "Discovery HD World", "group": "Infotainment"},
-            {"name": "Travelxp Tamil", "group": "Regional Tamil"},
-            {"name": "Puthu Yugam", "group": "Tamil"},
-            {"name": "Thanthi One", "group": "Tamil"},
-            {"name": "Tunes 6", "group": "Music"},
-            {"name": "Jothi TV", "group": "Tamil"},
-            {"name": "Colors Infinity HD", "group": "Movies"},
+            {"name": "Eurosport HD", "group": "Sports"},
             {"name": "Jio Sports HD", "group": "Sports"},
             {"name": "Jio Specials HD", "group": "Infotainment"}
-  
           ]'
 
           # 2. Fetch Source JSON
           echo "📥 Fetching JSON..."
           JSON=$(curl -fsSL --max-time 30 "$JSON_URL") || { echo "❌ Fetch failed"; exit 1; }
 
-          # 3. Generate New Content Block
+          # 3. Generate Formatted Content
           echo "⚙️ Generating channel block..."
           echo "$JSON" | jq -r --argjson list "$TARGET_CHANNELS" '
             def channels:
@@ -81,6 +88,7 @@ jobs:
             $target_obj.name as $target_name |
             $target_obj.group as $target_group | 
             
+            # Match Logic
             ($all | 
              map(select((.name // .title // "") | ascii_downcase == ($target_name | ascii_downcase))) | 
              sort_by(if (.link | contains("BTS")) then 0 else 1 end) | 
@@ -108,16 +116,21 @@ jobs:
                 "#KODIPROP:inputstream.adaptive.license_type=clearkey\n#KODIPROP:inputstream.adaptive.license_key=" +
                 ($drmLicense | split(":")[0:2] | join(":"))
               else "" end) as $drm |
-              "#EXTVLCOPT:http-user-agent=plaYtv/7.1.5%20(Linux%3BAndroid%2015)%20ExoPlayerLib/2.11.6%20YGX/69.69.69.69" as $ua |
+              
+              "#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0" as $ua |
+              
               (if ($cookie | length > 0) then
                 "#EXTHTTP:{\"cookie\":\"" + ($cookie | gsub("\""; "\\\"")) + "\"}"
-              else "" end) as $cookie_line |
+              else "" end) as $cookie_header |
+              
+              ($link + (if ($link | contains("?")) then "&" else "?" end) + $cookie) as $final_url |
+              
               [
                 $extinf,
                 ($drm | select(. != "")),
                 $ua,
-                ($cookie_line | select(. != "")),
-                $link
+                ($cookie_header | select(. != "")),
+                $final_url
               ] | join("\n")
             else empty end
           ' > jio_update.temp
@@ -127,11 +140,9 @@ jobs:
           END_MARKER="# >>> JIO_AUTO_END"
           
           if [ -f "$FILE_NAME" ]; then
-            # Remove old content between markers
             sed -i "/$START_MARKER/,/$END_MARKER/{//!d}" "$FILE_NAME"
-            # Insert new content after start marker
             sed -i "/$START_MARKER/r jio_update.temp" "$FILE_NAME"
-            echo "✅ index.html updated."
+            echo "✅ index.html updated successfully."
           else
             echo "❌ File $FILE_NAME not found!"
             exit 1
@@ -147,6 +158,5 @@ jobs:
             echo "➡️ No changes detected"
             exit 0
           fi
-          git commit -m "✅ Auto-update Jio Channels in index.html"
+          git commit -m "✅ Auto-update index.html (Every 2h)"
           git push origin main
-          
