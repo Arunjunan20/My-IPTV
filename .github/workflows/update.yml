@@ -52,7 +52,7 @@ jobs:
             {"name": "Tunes 6", "group": "Music"},
             {"name": "Jothi TV", "group": "Tamil"},
             {"name": "Colors Infinity HD", "group": "Movies"},
-            {"name": "Jio Sporsts HD", "group": "Sports"},
+            {"name": "Jio Sports HD", "group": "Sports"},
             {"name": "Jio Specials HD", "group": "Infotainment"}
   
           ]'
