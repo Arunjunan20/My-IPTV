@@ -49,6 +49,7 @@ jobs:
             {"name": "Colors Infinity HD", "group": "Movies"},
             {"name": "Sonic Hindi", "group": "Kids"},
             {"name": "Cartoon Network", "group": "Kids"},
+            {"name": "Discovery Kids", "group": "Kids"},
             {"name": "Nick Jr", "group": "Kids"},
             {"name": "Nick HD+", "group": "Kids"},
             {"name": "Nick Hindi", "group": "Kids"},
