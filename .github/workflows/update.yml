@@ -26,7 +26,7 @@ jobs:
 
       - name: Update Jio Section in index.html
         env:
-          JSON_URL: 'https://playify.pages.dev/Jiotv.json'
+          JSON_URL: 'https://jtv.pfy.workers.dev'
           FILE_NAME: 'index.html'
         run: |
           set -euo pipefail
