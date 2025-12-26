@@ -49,7 +49,7 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
+                  "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
                   "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
                   "MK Six", "Velicham TV", "Tamilan Television", "Makkal TV", "Puthuyugam TV"
@@ -110,14 +110,16 @@ jobs:
               global jio_token, zee_token
               for item in items:
                   link = item.get("link") or item.get("url") or ""
+                  
                   if not jio_token and "__hdnea__=" in link:
                       match = re.search(r'(__hdnea__=[^"&|]*)', link)
                       if match: jio_token = match.group(1)
+
                   if not zee_token and "hdntl=" in link:
                       match = re.search(r'(hdntl=[^"&|]*)', link)
                       if match: zee_token = match.group(1)
 
-          # --- 3. UPDATED M3U PARSER (Catches #EXTHTTP) ---
+          # --- 3. M3U PARSER ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -125,16 +127,13 @@ jobs:
               
               for line in lines:
                   line = line.strip()
-                  
                   if line.startswith("#EXTINF"):
                       current_item = {} 
                       parts = line.rsplit(',', 1)
                       if len(parts) == 2:
                           current_item['name'] = parts[1].strip()
-                      
                       id_match = re.search(r'tvg-id="([^"]+)"', line)
                       if id_match: current_item['tvg_id'] = id_match.group(1)
-                      
                       logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                       if logo_match: current_item['tvg_logo'] = logo_match.group(1)
 
@@ -146,22 +145,15 @@ jobs:
                       elif "license_type=" in line:
                           type_val = line.split("license_type=", 1)[1].strip()
                           current_item['drmScheme'] = type_val
-
+                  
                   elif line.startswith("#EXTHTTP"):
-                      # Capture cookie from #EXTHTTP:{"cookie":"..."}
                       if "cookie" in line:
                           try:
-                              # Extract content inside {"cookie":"..."}
-                              # Usually looks like #EXTHTTP:{"cookie":"__hdnea__=..."}
-                              # We try to extract just the value string
                               cookie_match = re.search(r'"cookie"\s*:\s*"([^"]+)"', line)
-                              if cookie_match:
-                                  current_item['cookie'] = cookie_match.group(1)
-                          except:
-                              pass
+                              if cookie_match: current_item['cookie'] = cookie_match.group(1)
+                          except: pass
 
                   elif line and not line.startswith("#"):
-                      # URL Found
                       if 'name' in current_item:
                           current_item['url'] = line
                           items.append(current_item)
@@ -172,6 +164,9 @@ jobs:
           new_playlist_lines = []
           seen_channels = set()
           
+          # NEW USER AGENT (From your working example)
+          USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
+
           def extract_from_source(url):
               try:
                   print(f"Scanning: {url}...")
@@ -221,17 +216,23 @@ jobs:
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
 
-                              if "jiotvmblive.cdn.jio.com" in link and jio_token:
+                              # --- LINK & TOKEN LOGIC ---
+                              is_jio = "jiotvmblive.cdn.jio.com" in link
+                              is_zee = "zee5.com" in link
+
+                              if is_jio and jio_token:
                                   base = link.split("?")[0]
                                   link = f"{base}?{jio_token}"
                                   cookie = jio_token
-                              elif "zee5.com" in link and zee_token:
+                              elif is_zee and zee_token:
+                                  # For Zee5, append token to URL
                                   if "hdntl=" in link:
                                       link = re.sub(r'hdntl=[^&]*', zee_token, link)
                                   else:
                                       sep = "&" if "?" in link else "?"
                                       link = f"{link}{sep}{zee_token}"
-                                  cookie = zee_token
+                                  # Clear cookie for Zee5 (URL token is enough based on your working example)
+                                  cookie = None 
 
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
@@ -248,10 +249,10 @@ jobs:
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              # User Agent
-                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0")
+                              # User Agent (New)
+                              new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={USER_AGENT}")
 
-                              # Cookie
+                              # Cookie (Only for Jio or others, NOT Zee5)
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
