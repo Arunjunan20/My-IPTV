@@ -41,9 +41,10 @@ jobs:
           
           # Source URLs
           source_urls = [
+              "https://livetv-cb7.pages.dev/hotstar",
               "https://ztv.pfy.workers.dev",
-              "https://z5.pfy.workers.dev",
-              "https://livetv-cb7.pages.dev/hotstar"
+              "https://z5.pfy.workers.dev"
+              
           ]
 
           # Categories
