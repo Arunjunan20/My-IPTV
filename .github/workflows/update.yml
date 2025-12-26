@@ -39,20 +39,20 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs (JSON + M3U mixed)
+          # Source URLs
           source_urls = [
               "https://ztv.pfy.workers.dev",
               "https://z5.pfy.workers.dev",
               "https://raw.githubusercontent.com/fakeall12398-sketch/JIO_TV/aa5248ae47451b2c11745b28e2e8f12dfaa18e4e/jstar.m3u"
           ]
 
-          # Your Categories
+          # Categories
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
                   "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
-                  "MK Six", "Velicham TV" ,  "Puthu Yugam",  "Makkal TV", "Tamilan Television"
+                  "MK Six", "Velicham TV", "Tamilan Television", "Makkal TV", "Puthuyugam TV"
               ],
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
@@ -119,34 +119,45 @@ jobs:
                       match = re.search(r'(hdntl=[^"&|]*)', link)
                       if match: zee_token = match.group(1)
 
-          # --- 3. PARSERS ---
-          
+          # --- 3. UPDATED M3U PARSER (Fixes License Issue) ---
           def parse_m3u(content):
-              """Converts M3U content to list of dicts similar to JSON"""
               items = []
               lines = content.splitlines()
               current_item = {}
               
               for line in lines:
                   line = line.strip()
+                  
                   if line.startswith("#EXTINF"):
-                      # Extract info
-                      current_item = {}
-                      # Get Name (last part after comma)
+                      # Reset current_item but keep any props found immediately before? 
+                      # Usually props come AFTER extinf in Kodi m3u, or before. 
+                      # Safest is to reset if we have a finished item (url found).
+                      if 'url' in current_item: 
+                           # This shouldn't happen if flow is correct, but safety first
+                           current_item = {}
+
                       parts = line.rsplit(',', 1)
                       if len(parts) == 2:
                           current_item['name'] = parts[1].strip()
-                          
-                      # Get ID
+                      
                       id_match = re.search(r'tvg-id="([^"]+)"', line)
                       if id_match: current_item['tvg_id'] = id_match.group(1)
                       
-                      # Get Logo
                       logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                       if logo_match: current_item['tvg_logo'] = logo_match.group(1)
-                      
+
+                  elif line.startswith("#KODIPROP"):
+                      # >>> EXTRACT LICENSE KEY <<<
+                      if "license_key=" in line:
+                          key = line.split("license_key=")[1].strip()
+                          current_item['drmLicense'] = key
+                          current_item['drmScheme'] = 'clearkey' # Assume clearkey if key present
+                      elif "license_type=" in line:
+                          type_val = line.split("license_type=")[1].strip()
+                          current_item['drmScheme'] = type_val
+
                   elif line and not line.startswith("#"):
-                      # This is the URL
+                      # URL Line
                       if 'name' in current_item:
                           current_item['url'] = line
                           items.append(current_item)
@@ -155,6 +166,7 @@ jobs:
 
           # --- 4. PROCESS SOURCE ---
           new_playlist_lines = []
+          seen_channels = set()
           
           def extract_from_source(url):
               try:
@@ -176,17 +188,15 @@ jobs:
                               elif "list" in data: items = data["list"]
                               else: items = [data]
                           elif isinstance(data, list): items = data
-                      except json.JSONDecodeError:
-                          print("  -> Unknown format, skipping.")
-                          return
+                      except json.JSONDecodeError: return
 
-                  # Extract Global Tokens first
                   find_tokens(items)
 
-                  # Process Channels
                   for category, targets in categories.items():
                       for target_name in targets:
-                          # Fuzzy match logic
+                          if target_name.lower() in seen_channels:
+                              continue
+
                           matches = [
                               item for item in items 
                               if (item.get("name") or item.get("title") or "").lower().strip() == target_name.lower().strip()
@@ -205,16 +215,14 @@ jobs:
                               
                               if not link: continue
 
-                              # >>> APPLY GLOBAL TOKENS <<<
+                              seen_channels.add(target_name.lower())
+
                               cookie = match.get("cookie") or match.get("cookies") or ""
 
-                              # 1. JIO Logic
                               if "jiotvmblive.cdn.jio.com" in link and jio_token:
                                   base = link.split("?")[0]
                                   link = f"{base}?{jio_token}"
                                   cookie = jio_token
-                              
-                              # 2. ZEE Logic
                               elif "zee5.com" in link and zee_token:
                                   if "hdntl=" in link:
                                       link = re.sub(r'hdntl=[^&]*', zee_token, link)
@@ -223,33 +231,29 @@ jobs:
                                       link = f"{link}{sep}{zee_token}"
                                   cookie = zee_token
 
-                              # Build Entry
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
                               
-                              # Restore Logo
                               if name in existing_logos:
                                   extinf_parts.append(f'tvg-logo="{existing_logos[name]}"')
                               
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
 
-                              # DRM Logic
-                              if drm_scheme == "clearkey" and drm_license and ":" in drm_license:
-                                  key_parts = drm_license.split(":")[:2]
+                              # DRM Keys
+                              if (drm_scheme == "clearkey" or "clearkey" in drm_scheme) and drm_license:
+                                  # Some licenses are just keys, some are key_id:key
+                                  # If it contains valid key format (hex:hex)
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
-                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
+                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              # User Agent
                               new_playlist_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
 
-                              # Cookie
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
                               
-                              # Final URL
                               separator = "&" if "?" in link else "?"
                               if cookie and cookie not in link:
                                   final_url = f"{link}{separator}{cookie}"
@@ -262,7 +266,6 @@ jobs:
               except Exception as e:
                   print(f"Error parsing {url}: {e}")
 
-          # --- MAIN EXECUTION ---
           for url in source_urls:
               extract_from_source(url)
 
