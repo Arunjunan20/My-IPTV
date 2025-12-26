@@ -43,7 +43,7 @@ jobs:
           source_urls = [
               "https://ztv.pfy.workers.dev",
               "https://z5.pfy.workers.dev",
-              "https://raw.githubusercontent.com/fakeall12398-sketch/JIO_TV/aa5248ae47451b2c11745b28e2e8f12dfaa18e4e/jstar.m3u"
+              "https://livetv-cb7.pages.dev/hotstar"
           ]
 
           # Categories
