@@ -39,7 +39,7 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs (First one has HIGHEST priority)
+          # Source URLs
           source_urls = [
               "https://livetv-cb7.pages.dev/hotstar",
               "https://ztv.pfy.workers.dev",
