@@ -126,8 +126,8 @@ jobs:
                               name = target_name
                               tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
                               
-                              # NOTE: Logo extraction DISABLED
-                              # logo = match.get("tvg_logo") or ... 
+                              # --- LOGIC: LOGO ENABLED ---
+                              logo = match.get("tvg_logo") or match.get("logo") or match.get("icon") or ""
                               
                               drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
                               drm_license = match.get("drmLicense") or match.get("license") or ""
@@ -143,8 +143,8 @@ jobs:
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
                               
-                              # NOTE: Logo appending DISABLED
-                              # if logo: extinf_parts.append(f'tvg-logo="{logo}"')
+                              # --- LOGIC: LOGO APPENDED ---
+                              if logo: extinf_parts.append(f'tvg-logo="{logo}"')
                               
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
