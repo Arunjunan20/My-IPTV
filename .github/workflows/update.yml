@@ -50,7 +50,7 @@ jobs:
                   "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
                   "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
-                  "MK Six","Velicham TV","Tamilan Television", "Makkal TV", "Puthuyugam TV"
+                  "MK Six", "Velicham TV", "Tamilan Television", "Makkal TV", "Puthuyugam TV"
               ],
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
@@ -111,19 +111,22 @@ jobs:
                   count = 0
                   for category, targets in categories.items():
                       for target_name in targets:
+                          # Find matching items
                           matches = [
                               item for item in items 
                               if isinstance(item, dict) and (item.get("name") or item.get("title") or "").lower() == target_name.lower()
                           ]
                           
                           if matches:
+                              # Sort: Prefer 'BTS' links if available
                               matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
                               match = matches[0]
                               
+                              # Extract fields
                               name = target_name
                               tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
                               
-                              # NOTE: Logo extraction removed to prevent overwriting
+                              # NOTE: Logo extraction DISABLED
                               # logo = match.get("tvg_logo") or ... 
                               
                               drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
@@ -134,6 +137,8 @@ jobs:
                               if not link: continue
 
                               # --- Build Playlist Entry ---
+                              
+                              # 1. EXTINF Line
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
@@ -144,21 +149,27 @@ jobs:
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
 
+                              # 2. DRM Logic (Kodi Prop for ClearKey)
                               if drm_scheme == "clearkey" and drm_license and ":" in drm_license:
                                   key_parts = drm_license.split(":")[:2]
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
                               
+                              # 3. User Agent
                               new_playlist_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
 
+                              # 4. Cookie Header
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
                               
+                              # 5. Final URL
                               separator = "&" if "?" in link else "?"
                               final_url = f"{link}{separator}{cookie}" if cookie else link
                               new_playlist_lines.append(final_url)
-                              new_playlist_lines.append("") # Blank line
+                              
+                              # 6. Blank Line
+                              new_playlist_lines.append("")
                               
                               count += 1
 
@@ -167,6 +178,7 @@ jobs:
               except Exception as e:
                   print(f"Error parsing JSON {url}: {e}")
 
+          # --- MAIN EXECUTION ---
           for url in json_urls:
               extract_from_json(url)
 
@@ -207,3 +219,15 @@ jobs:
           EOF
           
           python update_script.py
+
+      - name: Commit & Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "➡️ No changes detected"
+            exit 0
+          fi
+          git commit -m "✅ Auto-update playlist in index.html"
+          git push origin main
