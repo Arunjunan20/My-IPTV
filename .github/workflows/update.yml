@@ -110,16 +110,14 @@ jobs:
               global jio_token, zee_token
               for item in items:
                   link = item.get("link") or item.get("url") or ""
-                  
                   if not jio_token and "__hdnea__=" in link:
                       match = re.search(r'(__hdnea__=[^"&|]*)', link)
                       if match: jio_token = match.group(1)
-
                   if not zee_token and "hdntl=" in link:
                       match = re.search(r'(hdntl=[^"&|]*)', link)
                       if match: zee_token = match.group(1)
 
-          # --- 3. UPDATED M3U PARSER (Fixes License Issue) ---
+          # --- 3. UPDATED M3U PARSER (Catches #EXTHTTP) ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -129,13 +127,7 @@ jobs:
                   line = line.strip()
                   
                   if line.startswith("#EXTINF"):
-                      # Reset current_item but keep any props found immediately before? 
-                      # Usually props come AFTER extinf in Kodi m3u, or before. 
-                      # Safest is to reset if we have a finished item (url found).
-                      if 'url' in current_item: 
-                           # This shouldn't happen if flow is correct, but safety first
-                           current_item = {}
-
+                      current_item = {} 
                       parts = line.rsplit(',', 1)
                       if len(parts) == 2:
                           current_item['name'] = parts[1].strip()
@@ -147,21 +139,33 @@ jobs:
                       if logo_match: current_item['tvg_logo'] = logo_match.group(1)
 
                   elif line.startswith("#KODIPROP"):
-                      # >>> EXTRACT LICENSE KEY <<<
                       if "license_key=" in line:
-                          key = line.split("license_key=")[1].strip()
+                          key = line.split("license_key=", 1)[1].strip()
                           current_item['drmLicense'] = key
-                          current_item['drmScheme'] = 'clearkey' # Assume clearkey if key present
+                          current_item['drmScheme'] = 'clearkey'
                       elif "license_type=" in line:
-                          type_val = line.split("license_type=")[1].strip()
+                          type_val = line.split("license_type=", 1)[1].strip()
                           current_item['drmScheme'] = type_val
 
+                  elif line.startswith("#EXTHTTP"):
+                      # Capture cookie from #EXTHTTP:{"cookie":"..."}
+                      if "cookie" in line:
+                          try:
+                              # Extract content inside {"cookie":"..."}
+                              # Usually looks like #EXTHTTP:{"cookie":"__hdnea__=..."}
+                              # We try to extract just the value string
+                              cookie_match = re.search(r'"cookie"\s*:\s*"([^"]+)"', line)
+                              if cookie_match:
+                                  current_item['cookie'] = cookie_match.group(1)
+                          except:
+                              pass
+
                   elif line and not line.startswith("#"):
-                      # URL Line
+                      # URL Found
                       if 'name' in current_item:
                           current_item['url'] = line
                           items.append(current_item)
-                          current_item = {} # Reset
+                          current_item = {} 
               return items
 
           # --- 4. PROCESS SOURCE ---
@@ -176,7 +180,6 @@ jobs:
                   content = response.text
                   
                   items = []
-                  # Determine if JSON or M3U
                   if content.strip().startswith("#EXTM3U") or ".m3u" in url:
                       items = parse_m3u(content)
                   else:
@@ -203,7 +206,6 @@ jobs:
                           ]
                           
                           if matches:
-                              # Sort: Prefer 'BTS' links
                               matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
                               match = matches[0]
                               
@@ -243,13 +245,13 @@ jobs:
 
                               # DRM Keys
                               if (drm_scheme == "clearkey" or "clearkey" in drm_scheme) and drm_license:
-                                  # Some licenses are just keys, some are key_id:key
-                                  # If it contains valid key format (hex:hex)
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
+                              # User Agent
+                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0")
 
+                              # Cookie
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
@@ -320,3 +322,4 @@ jobs:
           fi
           git commit -m "✅ Auto-update playlist in index.html"
           git push origin main
+          
