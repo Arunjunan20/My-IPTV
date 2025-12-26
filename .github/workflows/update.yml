@@ -1,154 +1,220 @@
-name: Auto-Update index.html (Jio)
+name: Auto-Update index.html
 
-concurrency:
-  group: auto-update-index
-  cancel-in-progress: true
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Runs every 2 hours
+  workflow_dispatch: # Allows manual run
 
 permissions:
   contents: write
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 */2 * * *'
-
 jobs:
-  update:
+  update-playlist:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Update Jio Section in index.html
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run Update Script
         env:
-          JSON_URL: 'https://jtv.pfy.workers.dev'
           FILE_NAME: 'index.html'
         run: |
-          set -euo pipefail
+          cat <<EOF > update_script.py
+          import requests
+          import json
+          import os
 
-          # 1. Target Channel List
-          TARGET_CHANNELS='[
-            {"name": "Sun TV HD", "group": "Regional Tamil"},
-            {"name": "Sun Music HD", "group": "Regional Tamil"},
-            {"name": "KTV HD", "group": "Movies"},
-            {"name": "Sun Life", "group": "Regional Tamil"},
-            {"name": "Raj TV", "group": "Regional Tamil"},
-            {"name": "Raj Digital Plus", "group": "Tamil"},
-            {"name": "Puthu Yugam", "group": "Tamil"},
-            {"name": "Thanthi One", "group": "Tamil"},
-            {"name": "Jothi TV", "group": "Tamil"},
-            {"name": "D Tamil", "group": "Regional Tamil"},
-            {"name": "Travelxp Tamil", "group": "Regional Tamil"},
-            {"name": "Raj Musix", "group": "Music"},
-            {"name": "Tunes 6", "group": "Music"},
-            {"name": "Colors Infinity HD", "group": "Movies"},
-            {"name": "Sonic Hindi", "group": "Kids"},
-            {"name": "Cartoon Network", "group": "Kids"},
-            {"name": "Discovery Kids", "group": "Kids"},
-            {"name": "Nick Jr", "group": "Kids"},
-            {"name": "Nick HD+", "group": "Kids"},
-            {"name": "Nick Hindi", "group": "Kids"},
-            {"name": "Pogo", "group": "Kids"},
-            {"name": "Raj News 24x7", "group": "News"},
-            {"name": "Tamil Janam", "group": "News"},
-            {"name": "Jaya Plus", "group": "News"},
-            {"name": "History TV18 HD", "group": "Infotainment"},
-            {"name": "Animal Planet HD World", "group": "Infotainment"},
-            {"name": "Discovery HD World", "group": "Infotainment"},
-            {"name": "Eurosport HD", "group": "Sports"},
-            {"name": "Jio Sports HD", "group": "Sports"},
-            {"name": "Jio Specials HD", "group": "Infotainment"}
-          ]'
-
-          # 2. Fetch Source JSON
-          echo " Fetching JSON..."
-          JSON=$(curl -fsSL --max-time 30 "$JSON_URL") || { echo "❌ Fetch failed"; exit 1; }
-
-          # 3. Generate Formatted Content
-          echo " Generating channel block..."
-          echo "$JSON" | jq -r --argjson list "$TARGET_CHANNELS" '
-            def channels:
-              if type == "array" then .
-              elif type == "object" then
-                if has("channels") and (.channels | type == "array") then .channels
-                elif has("data") and (.data | type == "array") then .data
-                elif has("list") and (.list | type == "array") then .list
-                elif (.[] | type == "object") then [.[]]
-                else []
-                end
-              else []
-              end;
-            
-            channels as $all |
-            $list[] as $target_obj |
-            $target_obj.name as $target_name |
-            $target_obj.group as $target_group | 
-            
-            # Match Logic
-            ($all | 
-             map(select((.name // .title // "") | ascii_downcase == ($target_name | ascii_downcase))) | 
-             sort_by(if (.link | contains("BTS")) then 0 else 1 end) | 
-             .[0]
-            ) as $match |
-            
-            if ($match | type == "object") and ($match.link // $match.url // "") != "" then
-              $match |
-              $target_name as $name |
-              (.tvg_id // .tvgId // .id // "") as $tvg_id |
-              (.tvg_logo // .logo // .icon // "") as $tvg_logo |
-              (.drmScheme // .drm_scheme // .drm // "") as $drmScheme |
-              (.drmLicense // .license // "") as $drmLicense |
-              (.cookie // .cookies // "") as $cookie |
-              (.link // .url // .stream_url // .hls // .mpd // "") as $link |
-              
-              "#EXTINF:-1 " +
-                (if ($tvg_id | length > 0) then "tvg-id=\"\($tvg_id)\" " else "" end) +
-                "group-title=\"\($target_group)\" " +
-                (if ($tvg_logo | length > 0) then "tvg-logo=\"\($tvg_logo)\" " else "" end) +
-                ",\($name | gsub(","; "\\,"))" |
-              . as $extinf |
-              
-              (if ($drmScheme == "clearkey") and ($drmLicense | test("^[a-zA-Z0-9]+:[a-zA-Z0-9]+")) then
-                "#KODIPROP:inputstream.adaptive.license_type=clearkey\n#KODIPROP:inputstream.adaptive.license_key=" +
-                ($drmLicense | split(":")[0:2] | join(":"))
-              else "" end) as $drm |
-              
-              "#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0" as $ua |
-              
-              (if ($cookie | length > 0) then
-                "#EXTHTTP:{\"cookie\":\"" + ($cookie | gsub("\""; "\\\"")) + "\"}"
-              else "" end) as $cookie_header |
-              
-              ($link + (if ($link | contains("?")) then "&" else "?" end) + $cookie) as $final_url |
-              
-              [
-                $extinf,
-                ($drm | select(. != "")),
-                $ua,
-                ($cookie_header | select(. != "")),
-                $final_url
-              ] | join("\n")
-            else empty end
-          ' > jio_update.temp
-
-          # 4. Inject into index.html
-          START_MARKER="# >>> JIO_AUTO_START"
-          END_MARKER="# >>> JIO_AUTO_END"
+          # --- CONFIGURATION ---
+          file_name = os.getenv("FILE_NAME", "index.html")
           
-          if [ -f "$FILE_NAME" ]; then
-            sed -i "/$START_MARKER/,/$END_MARKER/{//!d}" "$FILE_NAME"
-            sed -i "/$START_MARKER/r jio_update.temp" "$FILE_NAME"
-            echo "✅ index.html updated successfully."
-          else
-            echo "❌ File $FILE_NAME not found!"
-            exit 1
-          fi
-          rm jio_update.temp
+          # Source URLs
+          json_urls = [
+              "https://ztv.pfy.workers.dev",
+              "https://z5.pfy.workers.dev",
+              ]
+
+          # Define Categories and their Channels
+          categories = {
+              "Tamil": [
+                  "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
+                  "Jaya TV HD", "Raj TV", "Thanthi One", "D Tamil", "Sun life",
+                  "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
+                  "MK Six","Velicham TV","Tamilan Television","Makkal TV", "Puthuyugam TV"
+              ],
+              "Movies": [
+                  "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
+                  "J Movies", "Raj Digital Plus", "Star Movies HD", 
+                  "Star Movies Select HD", "Colors Infinity HD", 
+                  "Zee Cafe HD", "&Flix HD", "&Prive HD"
+              ],
+              "Music": [
+                  "Sun Music HD", "Adithya", "Raj Musix", "Jaya Max", "Tunes 6"
+              ],
+              "News": [
+                  "Sun News", "News7 Tamil", "Thanthi TV", "News18 Tamilnadu", 
+                  "Raj News 24x7", "Tamil Janam", "Jaya Plus", "M Nadu", 
+                  "News Tamil 24x7", "News J"
+              ],
+              "Sports": [
+                  "Star Sports 1 HD", "Star Sports 2 HD", "Star Sports 3", 
+                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD", "Eurosport HD",
+                  "Jio Sports HD"
+              ],
+              "Kids": [
+                  "Nick Tamil", "Sonic Tamil", "Pogo", "Cartoon Network",
+                  "CN HD+ Tamil", "Chutti TV", "Disney Channel", "Disney Junior",
+                  "Disney International", "Hungama", "Super Hungama", 
+                  "Nick Jr", "Nick HD+", "Discovery Kids"
+              ],
+              "Infotainment": [
+                  "History TV18 HD", "Discovery HD World", "National Geographic HD", 
+                  "Nat Geo Wild HD", "Animal Planet HD World", "Travelxp Tamil", 
+                  "Good Times", "Zee Zest HD", "Jio Specials HD"
+              ]
+          }
+
+          new_playlist_lines = []
+          
+          def extract_from_json(url):
+              try:
+                  print(f"Scanning JSON: {url}...")
+                  response = requests.get(url, timeout=30)
+                  response.raise_for_status()
+                  
+                  try:
+                      data = response.json()
+                  except json.JSONDecodeError:
+                      print(f"  -> Skipping {url}: Invalid JSON.")
+                      return
+
+                  # Normalize data structure
+                  if isinstance(data, dict):
+                      if "channels" in data and isinstance(data["channels"], list): items = data["channels"]
+                      elif "data" in data and isinstance(data["data"], list): items = data["data"]
+                      elif "list" in data and isinstance(data["list"], list): items = data["list"]
+                      else: items = [data]
+                  elif isinstance(data, list):
+                      items = data
+                  else:
+                      items = []
+
+                  count = 0
+                  for category, targets in categories.items():
+                      for target_name in targets:
+                          # Find matching items
+                          matches = [
+                              item for item in items 
+                              if isinstance(item, dict) and (item.get("name") or item.get("title") or "").lower() == target_name.lower()
+                          ]
+                          
+                          if matches:
+                              # Sort: Prefer 'BTS' links if available
+                              matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
+                              match = matches[0]
+                              
+                              # Extract fields
+                              name = target_name
+                              tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
+                              logo = match.get("tvg_logo") or match.get("logo") or match.get("icon") or ""
+                              drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
+                              drm_license = match.get("drmLicense") or match.get("license") or ""
+                              cookie = match.get("cookie") or match.get("cookies") or ""
+                              link = match.get("link") or match.get("url") or match.get("stream_url") or match.get("hls") or match.get("mpd") or ""
+                              
+                              if not link: continue
+
+                              # --- Build Playlist Entry ---
+                              
+                              # 1. EXTINF Line
+                              extinf_parts = ["#EXTINF:-1"]
+                              if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
+                              extinf_parts.append(f'group-title="{category}"')
+                              if logo: extinf_parts.append(f'tvg-logo="{logo}"')
+                              header = " ".join(extinf_parts) + "," + name
+                              new_playlist_lines.append(header)
+
+                              # 2. DRM Logic (Kodi Prop for ClearKey)
+                              if drm_scheme == "clearkey" and drm_license and ":" in drm_license:
+                                  key_parts = drm_license.split(":")[:2]
+                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
+                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
+                              
+                              # 3. User Agent
+                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0")
+
+                              # 4. Cookie Header
+                              if cookie:
+                                  clean_cookie = cookie.replace('"', '\\"')
+                                  new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
+                              
+                              # 5. Final URL
+                              separator = "&" if "?" in link else "?"
+                              final_url = f"{link}{separator}{cookie}" if cookie else link
+                              new_playlist_lines.append(final_url)
+                              
+                              # 6. ADD A BLANK LINE AFTER EACH CHANNEL
+                              new_playlist_lines.append("")
+                              
+                              count += 1
+
+                  print(f"  -> Extracted {count} channels.")
+
+              except Exception as e:
+                  print(f"Error parsing JSON {url}: {e}")
+
+          # --- MAIN EXECUTION ---
+          for url in json_urls:
+              extract_from_json(url)
+
+          # --- INJECT INTO INDEX.HTML ---
+          start_marker = "# >>> JIO_AUTO_START"
+          end_marker = "# >>> JIO_AUTO_END"
+          
+          try:
+              with open(file_name, "r", encoding="utf-8") as f:
+                  content = f.read()
+
+              if start_marker not in content or end_marker not in content:
+                  print(f"Error: Markers '{start_marker}' or '{end_marker}' not found in {file_name}")
+                  exit(1)
+
+              pre_content = content.split(start_marker)[0]
+              post_content = content.split(end_marker)[1]
+              
+              # Combine parts: Start + Marker + New Lines + Marker + End
+              new_content = (
+                  pre_content + 
+                  start_marker + "\n" + 
+                  "\n".join(new_playlist_lines) + "\n" + 
+                  end_marker + 
+                  post_content
+              )
+              
+              with open(file_name, "w", encoding="utf-8") as f:
+                  f.write(new_content)
+                  
+              print(f"Successfully updated {file_name} with {len(new_playlist_lines)//6} channels.")
+
+          except FileNotFoundError:
+              print(f"Error: File {file_name} not found.")
+              exit(1)
+          except Exception as e:
+              print(f"Error updating file: {e}")
+              exit(1)
+          EOF
+          
+          python update_script.py
 
       - name: Commit & Push
         run: |
@@ -159,5 +225,5 @@ jobs:
             echo "➡️ No changes detected"
             exit 0
           fi
-          git commit -m "✅ Auto-update index.html (Every 2h)"
+          git commit -m "✅ Auto-update playlist in index.html"
           git push origin main
