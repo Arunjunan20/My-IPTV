@@ -48,23 +48,22 @@ jobs:
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
-                  "Jaya TV HD", "Raj TV", "Thanthi One", "D Tamil", "Sun life",
+                  "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
                   "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
-                  "MK Six","Velicham TV","Tamilan Television","Makkal TV", "Puthuyugam TV"
+                  "MK Six","Velicham TV","Tamilan Television", "Makkal TV", "Puthuyugam TV"
               ],
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
                   "J Movies", "Raj Digital Plus", "Star Movies HD", 
                   "Star Movies Select HD", "Colors Infinity HD", 
-                  "Zee Cafe HD", "&Flix HD", "&Prive HD"
+                  "Zee Café HD", "&Flix HD", "&Prive HD"
               ],
               "Music": [
-                  "Sun Music HD", "Adithya", "Raj Musix", "Jaya Max", "Tunes 6"
+                  "Sun Music HD", "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "News": [
-                  "Sun News", "News7 Tamil", "Thanthi TV", "News18 Tamilnadu", 
-                  "Raj News 24x7", "Tamil Janam", "Jaya Plus", "M Nadu", 
-                  "News Tamil 24x7", "News J"
+                  "Sun News", "News7 Tamil", "Thanthi TV", 
+                  "Raj News 24x7", "Tamil Janam", "Jaya Plus", "M Nadu", "News J"
               ],
               "Sports": [
                   "Star Sports 1 HD", "Star Sports 2 HD", "Star Sports 3", 
@@ -151,7 +150,7 @@ jobs:
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
                               
                               # 3. User Agent
-                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/69.1 ExoPlayerLib/824.0")
+                              new_playlist_lines.append("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
 
                               # 4. Cookie Header
                               if cookie:
