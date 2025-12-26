@@ -39,12 +39,11 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs
+          # Source URLs (First one has HIGHEST priority)
           source_urls = [
               "https://livetv-cb7.pages.dev/hotstar",
               "https://ztv.pfy.workers.dev",
               "https://z5.pfy.workers.dev"
-              
           ]
 
           # Categories
@@ -121,7 +120,12 @@ jobs:
                       match = re.search(r'(hdntl=[^"&|]*)', link)
                       if match: zee_token = match.group(1)
 
-          # --- 3. M3U PARSER ---
+          # --- 3. HELPER: SMART MATCH NAME ---
+          def normalize_name(name):
+              if not name: return ""
+              return name.lower().replace(" ", "").replace("_", "").replace("-", "").strip()
+
+          # --- 4. M3U PARSER ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -162,11 +166,10 @@ jobs:
                           current_item = {} 
               return items
 
-          # --- 4. PROCESS SOURCE ---
+          # --- 5. PROCESS SOURCE ---
           new_playlist_lines = []
           seen_channels = set()
           
-          # NEW USER AGENT (From your working example)
           USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
 
           def extract_from_source(url):
@@ -177,7 +180,8 @@ jobs:
                   content = response.text
                   
                   items = []
-                  if content.strip().startswith("#EXTM3U") or ".m3u" in url:
+                  # Robust check for M3U content vs JSON
+                  if content.strip().startswith("#EXTM3U") or ".m3u" in url or "hotstar" in url:
                       items = parse_m3u(content)
                   else:
                       try:
@@ -197,13 +201,18 @@ jobs:
                           if target_name.lower() in seen_channels:
                               continue
 
+                          # MATCHING: Normalize names (ignore spaces/underscores)
                           matches = [
                               item for item in items 
-                              if (item.get("name") or item.get("title") or "").lower().strip() == target_name.lower().strip()
+                              if normalize_name(item.get("name") or item.get("title")) == normalize_name(target_name)
                           ]
                           
                           if matches:
-                              matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
+                              # SORTING:
+                              matches.sort(key=lambda x: (
+                                  0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
+                                  (x.get("link") or x.get("url") or "").count("_")
+                              ))
                               match = matches[0]
                               
                               name = target_name
@@ -218,7 +227,7 @@ jobs:
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
 
-                              # --- LINK & TOKEN LOGIC ---
+                              # --- TOKEN INJECTION ---
                               is_jio = "jiotvmblive.cdn.jio.com" in link
                               is_zee = "zee5.com" in link
 
@@ -227,13 +236,11 @@ jobs:
                                   link = f"{base}?{jio_token}"
                                   cookie = jio_token
                               elif is_zee and zee_token:
-                                  # For Zee5, append token to URL
                                   if "hdntl=" in link:
                                       link = re.sub(r'hdntl=[^&]*', zee_token, link)
                                   else:
                                       sep = "&" if "?" in link else "?"
                                       link = f"{link}{sep}{zee_token}"
-                                  # Clear cookie for Zee5 (URL token is enough based on your working example)
                                   cookie = None 
 
                               extinf_parts = ["#EXTINF:-1"]
@@ -246,15 +253,12 @@ jobs:
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
 
-                              # DRM Keys
                               if (drm_scheme == "clearkey" or "clearkey" in drm_scheme) and drm_license:
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              # User Agent (New)
                               new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={USER_AGENT}")
 
-                              # Cookie (Only for Jio or others, NOT Zee5)
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
@@ -325,4 +329,3 @@ jobs:
           fi
           git commit -m "✅ Auto-update playlist in index.html"
           git push origin main
-          
