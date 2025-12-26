@@ -150,7 +150,7 @@ jobs:
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
                               
                               # 3. User Agent
-                              new_playlist_lines.append("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
+                              new_playlist_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
 
                               # 4. Cookie Header
                               if cookie:
