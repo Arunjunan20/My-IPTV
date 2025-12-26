@@ -39,10 +39,11 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs
-          json_urls = [
+          # Source URLs (JSON + M3U mixed)
+          source_urls = [
               "https://ztv.pfy.workers.dev",
-              "https://z5.pfy.workers.dev"
+              "https://z5.pfy.workers.dev",
+              "https://raw.githubusercontent.com/fakeall12398-sketch/JIO_TV/aa5248ae47451b2c11745b28e2e8f12dfaa18e4e/jstar.m3u"
           ]
 
           # Your Categories
@@ -51,7 +52,7 @@ jobs:
                   "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
                   "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
-                  "MK Six", "Velicham TV", "Tamilan Television", "Makkal TV", "Puthuyugam TV"
+                  "MK Six", "Velicham TV" ,  "Puthu Yugam",  "Makkal TV", "Tamilan Television"
               ],
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
@@ -75,12 +76,14 @@ jobs:
                   "Nick Tamil", "Sonic Tamil", "Pogo", "Cartoon Network",
                   "CN HD+ Tamil", "Chutti TV", "Disney Channel", "Disney Junior",
                   "Disney International", "Hungama", "Super Hungama", 
-                  "Nick Jr", "Nick HD+", "Discovery Kids"
+                  "Nick Jr", "Nick HD+", "Discovery Kids",
+                  "Sony Yay Hindi" 
               ],
               "Infotainment": [
                   "History TV18 HD", "Discovery HD World", "National Geographic HD", 
                   "Nat Geo Wild HD", "Animal Planet HD World", "Travelxp Tamil", 
-                  "Good Times", "Zee Zest HD", "Jio Specials HD"
+                  "Good Times", "Zee Zest HD", "Jio Specials HD",
+                  "Discovery Tamil", "Sony BBC Earth HD"
               ]
           }
 
@@ -100,7 +103,6 @@ jobs:
               except Exception: pass
 
           # --- 2. GLOBAL TOKEN FINDER ---
-          # We scan all items first to find the freshest tokens available
           jio_token = None
           zee_token = None
 
@@ -109,38 +111,74 @@ jobs:
               for item in items:
                   link = item.get("link") or item.get("url") or ""
                   
-                  # Find Jio Token (__hdnea__)
                   if not jio_token and "__hdnea__=" in link:
-                      # Regex: Matches __hdnea__= followed by non-pipe/quote chars
                       match = re.search(r'(__hdnea__=[^"&|]*)', link)
                       if match: jio_token = match.group(1)
 
-                  # Find Zee Token (hdntl)
                   if not zee_token and "hdntl=" in link:
                       match = re.search(r'(hdntl=[^"&|]*)', link)
                       if match: zee_token = match.group(1)
 
-          # --- 3. PROCESS SOURCE ---
+          # --- 3. PARSERS ---
+          
+          def parse_m3u(content):
+              """Converts M3U content to list of dicts similar to JSON"""
+              items = []
+              lines = content.splitlines()
+              current_item = {}
+              
+              for line in lines:
+                  line = line.strip()
+                  if line.startswith("#EXTINF"):
+                      # Extract info
+                      current_item = {}
+                      # Get Name (last part after comma)
+                      parts = line.rsplit(',', 1)
+                      if len(parts) == 2:
+                          current_item['name'] = parts[1].strip()
+                          
+                      # Get ID
+                      id_match = re.search(r'tvg-id="([^"]+)"', line)
+                      if id_match: current_item['tvg_id'] = id_match.group(1)
+                      
+                      # Get Logo
+                      logo_match = re.search(r'tvg-logo="([^"]+)"', line)
+                      if logo_match: current_item['tvg_logo'] = logo_match.group(1)
+                      
+                  elif line and not line.startswith("#"):
+                      # This is the URL
+                      if 'name' in current_item:
+                          current_item['url'] = line
+                          items.append(current_item)
+                          current_item = {} # Reset
+              return items
+
+          # --- 4. PROCESS SOURCE ---
           new_playlist_lines = []
           
-          def extract_from_json(url):
+          def extract_from_source(url):
               try:
-                  print(f"Scanning JSON: {url}...")
+                  print(f"Scanning: {url}...")
                   response = requests.get(url, timeout=30)
                   response.raise_for_status()
+                  content = response.text
                   
-                  try:
-                      data = response.json()
-                  except json.JSONDecodeError: return
-
-                  # Normalize items
-                  if isinstance(data, dict):
-                      if "channels" in data and isinstance(data["channels"], list): items = data["channels"]
-                      elif "data" in data and isinstance(data["data"], list): items = data["data"]
-                      elif "list" in data and isinstance(data["list"], list): items = data["list"]
-                      else: items = [data]
-                  elif isinstance(data, list): items = data
-                  else: items = []
+                  items = []
+                  # Determine if JSON or M3U
+                  if content.strip().startswith("#EXTM3U") or ".m3u" in url:
+                      items = parse_m3u(content)
+                  else:
+                      try:
+                          data = json.loads(content)
+                          if isinstance(data, dict):
+                              if "channels" in data: items = data["channels"]
+                              elif "data" in data: items = data["data"]
+                              elif "list" in data: items = data["list"]
+                              else: items = [data]
+                          elif isinstance(data, list): items = data
+                      except json.JSONDecodeError:
+                          print("  -> Unknown format, skipping.")
+                          return
 
                   # Extract Global Tokens first
                   find_tokens(items)
@@ -148,12 +186,14 @@ jobs:
                   # Process Channels
                   for category, targets in categories.items():
                       for target_name in targets:
+                          # Fuzzy match logic
                           matches = [
                               item for item in items 
-                              if isinstance(item, dict) and (item.get("name") or item.get("title") or "").lower() == target_name.lower()
+                              if (item.get("name") or item.get("title") or "").lower().strip() == target_name.lower().strip()
                           ]
                           
                           if matches:
+                              # Sort: Prefer 'BTS' links
                               matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
                               match = matches[0]
                               
@@ -166,11 +206,12 @@ jobs:
                               if not link: continue
 
                               # >>> APPLY GLOBAL TOKENS <<<
+                              cookie = match.get("cookie") or match.get("cookies") or ""
+
                               # 1. JIO Logic
                               if "jiotvmblive.cdn.jio.com" in link and jio_token:
                                   base = link.split("?")[0]
                                   link = f"{base}?{jio_token}"
-                                  # Also update cookie for Jio
                                   cookie = jio_token
                               
                               # 2. ZEE Logic
@@ -181,10 +222,6 @@ jobs:
                                       sep = "&" if "?" in link else "?"
                                       link = f"{link}{sep}{zee_token}"
                                   cookie = zee_token
-                              
-                              else:
-                                  # Default cookie from JSON if no global token applied
-                                  cookie = match.get("cookie") or match.get("cookies") or ""
 
                               # Build Entry
                               extinf_parts = ["#EXTINF:-1"]
@@ -214,7 +251,6 @@ jobs:
                               
                               # Final URL
                               separator = "&" if "?" in link else "?"
-                              # Avoid double-adding cookie if it's already in the URL
                               if cookie and cookie not in link:
                                   final_url = f"{link}{separator}{cookie}"
                               else:
@@ -224,14 +260,13 @@ jobs:
                               new_playlist_lines.append("")
 
               except Exception as e:
-                  print(f"Error parsing JSON {url}: {e}")
+                  print(f"Error parsing {url}: {e}")
 
           # --- MAIN EXECUTION ---
-          for url in json_urls:
-              extract_from_json(url)
+          for url in source_urls:
+              extract_from_source(url)
 
           if jio_token: print(f"Applied Jio Token: {jio_token[:20]}...")
-          if zee_token: print(f"Applied Zee Token: {zee_token[:20]}...")
 
           # --- INJECT INTO INDEX.HTML ---
           start_marker = "# >>> JIO_AUTO_START"
