@@ -49,10 +49,11 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Zee Tamil HD", "Kalaignar TV", 
-                  "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "D Tamil", "Sun life",
-                  "Polimer TV", "Jothi TV", "OM TV", "Vendhar TV", "Madhimugam TV",
-                  "MK Six", "Velicham TV", "Tamilan Television", "Makkal TV", "Puthuyugam TV"
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
+                  "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "Sun life",
+                  "Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
+                  "D Tamil", "Jothi TV", "OM TV", "Tamilan Television",
+                  "Makkal TV", "Puthu Yugam"
               ],
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
