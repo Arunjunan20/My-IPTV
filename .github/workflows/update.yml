@@ -1,32 +1,4 @@
-name: Auto-Update index.html
-
-on:
-  schedule:
-    - cron: '0 */2 * * *' # Runs every 2 hours
-  workflow_dispatch: # Allows manual run
-
-permissions:
-  contents: write
-
-jobs:
-  update-playlist:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install requests
-        run: pip install requests
-
-      - name: Run Update Script
+- name: Run Update Script
         env:
           FILE_NAME: 'index.html'
         run: |
@@ -38,11 +10,11 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs
+          # Source URLs (Added 'jtv' back so Jio channels work)
           json_urls = [
               "https://ztv.pfy.workers.dev",
-              "https://z5.pfy.workers.dev",
-              ]
+              "https://z5.pfy.workers.dev"
+          ]
 
           # Define Categories and their Channels
           categories = {
@@ -56,7 +28,7 @@ jobs:
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
                   "J Movies", "Raj Digital Plus", "Star Movies HD", 
                   "Star Movies Select HD", "Colors Infinity HD", 
-                  "Zee Café HD", "&Flix HD", "&Prive HD"
+                  "Zee Cafe HD", "&Flix HD", "&Prive HD"
               ],
               "Music": [
                   "Sun Music HD", "Raj Musix", "Jaya Max", "Tunes 6"
@@ -111,21 +83,21 @@ jobs:
                   count = 0
                   for category, targets in categories.items():
                       for target_name in targets:
-                          # Find matching items
                           matches = [
                               item for item in items 
                               if isinstance(item, dict) and (item.get("name") or item.get("title") or "").lower() == target_name.lower()
                           ]
                           
                           if matches:
-                              # Sort: Prefer 'BTS' links if available
                               matches.sort(key=lambda x: 0 if "BTS" in (x.get("link") or x.get("url") or "") else 1)
                               match = matches[0]
                               
-                              # Extract fields
                               name = target_name
                               tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
-                              logo = match.get("tvg_logo") or match.get("logo") or match.get("icon") or ""
+                              
+                              # NOTE: Logo extraction removed to prevent overwriting
+                              # logo = match.get("tvg_logo") or ... 
+                              
                               drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
                               drm_license = match.get("drmLicense") or match.get("license") or ""
                               cookie = match.get("cookie") or match.get("cookies") or ""
@@ -134,36 +106,31 @@ jobs:
                               if not link: continue
 
                               # --- Build Playlist Entry ---
-                              
-                              # 1. EXTINF Line
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
-                              if logo: extinf_parts.append(f'tvg-logo="{logo}"')
+                              
+                              # NOTE: Logo appending DISABLED
+                              # if logo: extinf_parts.append(f'tvg-logo="{logo}"')
+                              
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
 
-                              # 2. DRM Logic (Kodi Prop for ClearKey)
                               if drm_scheme == "clearkey" and drm_license and ":" in drm_license:
                                   key_parts = drm_license.split(":")[:2]
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={':'.join(key_parts)}")
                               
-                              # 3. User Agent
                               new_playlist_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36")
 
-                              # 4. Cookie Header
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
                               
-                              # 5. Final URL
                               separator = "&" if "?" in link else "?"
                               final_url = f"{link}{separator}{cookie}" if cookie else link
                               new_playlist_lines.append(final_url)
-                              
-                              # 6. ADD A BLANK LINE AFTER EACH CHANNEL
-                              new_playlist_lines.append("")
+                              new_playlist_lines.append("") # Blank line
                               
                               count += 1
 
@@ -172,7 +139,6 @@ jobs:
               except Exception as e:
                   print(f"Error parsing JSON {url}: {e}")
 
-          # --- MAIN EXECUTION ---
           for url in json_urls:
               extract_from_json(url)
 
@@ -191,7 +157,6 @@ jobs:
               pre_content = content.split(start_marker)[0]
               post_content = content.split(end_marker)[1]
               
-              # Combine parts: Start + Marker + New Lines + Marker + End
               new_content = (
                   pre_content + 
                   start_marker + "\n" + 
@@ -214,15 +179,3 @@ jobs:
           EOF
           
           python update_script.py
-
-      - name: Commit & Push
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "➡️ No changes detected"
-            exit 0
-          fi
-          git commit -m "✅ Auto-update playlist in index.html"
-          git push origin main
