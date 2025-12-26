@@ -49,7 +49,7 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil", "Zee Tamil HD", "Kalaignar TV", 
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "Sun life",
                   "Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television",
@@ -180,7 +180,6 @@ jobs:
                   content = response.text
                   
                   items = []
-                  # Robust check for M3U content vs JSON
                   if content.strip().startswith("#EXTM3U") or ".m3u" in url or "hotstar" in url:
                       items = parse_m3u(content)
                   else:
@@ -201,14 +200,12 @@ jobs:
                           if target_name.lower() in seen_channels:
                               continue
 
-                          # MATCHING: Normalize names (ignore spaces/underscores)
                           matches = [
                               item for item in items 
                               if normalize_name(item.get("name") or item.get("title")) == normalize_name(target_name)
                           ]
                           
                           if matches:
-                              # SORTING:
                               matches.sort(key=lambda x: (
                                   0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
                                   (x.get("link") or x.get("url") or "").count("_")
@@ -227,14 +224,20 @@ jobs:
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
 
-                              # --- TOKEN INJECTION ---
+                              # --- TOKEN INJECTION & CLEANUP ---
                               is_jio = "jiotvmblive.cdn.jio.com" in link
                               is_zee = "zee5.com" in link
 
                               if is_jio and jio_token:
-                                  base = link.split("?")[0]
+                                  # CLEAN: Strip everything after .mpd, then add token
+                                  if ".mpd" in link:
+                                      base = link.split(".mpd")[0] + ".mpd"
+                                  else:
+                                      base = link.split("?")[0]
+                                  
                                   link = f"{base}?{jio_token}"
                                   cookie = jio_token
+                              
                               elif is_zee and zee_token:
                                   if "hdntl=" in link:
                                       link = re.sub(r'hdntl=[^&]*', zee_token, link)
@@ -263,13 +266,8 @@ jobs:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
                               
-                              separator = "&" if "?" in link else "?"
-                              if cookie and cookie not in link:
-                                  final_url = f"{link}{separator}{cookie}"
-                              else:
-                                  final_url = link
-                                  
-                              new_playlist_lines.append(final_url)
+                              # FINAL URL (No appending cookie here)
+                              new_playlist_lines.append(link)
                               new_playlist_lines.append("")
 
               except Exception as e:
