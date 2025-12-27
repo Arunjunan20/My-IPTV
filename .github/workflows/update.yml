@@ -48,7 +48,7 @@ jobs:
           ]
 
           # Categories
-           categories = {
+          categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
                   "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One",
