@@ -1,3 +1,4 @@
+
 name: Auto-Update index.html
 
 on:
@@ -50,21 +51,22 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD","KTV HD",
                   "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One",
                   "Sun life","Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television", "Makkal TV", "Puthu Yugam"
               ],
               "Movies": [
-                  "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
-                  "Star Movies HD", "Star Movies Select HD", 
+                  "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
+                  "J Movies", "Raj Digital Plus", "Star Movies HD", 
+                  "Star Movies Select HD", 
               ],
               "Music": [
                    "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "Entertainment": [
-                  "Zee Tamil HD APAC","Colors Infinity HD", "Zee Café HD", "&Flix HD",
-                  "&Prive HD", "MTV HD", "Disney International", "Nick HD+"
+                  "Colors Infinity HD", "Zee Cafe HD", "&Flix HD", "&Prive HD",
+                  "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
                   "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
@@ -126,7 +128,7 @@ jobs:
               link = link.strip()
               return link
 
-          # --- 3. M3U PARSER (Now Extracts User Agent) ---
+          # --- 3. M3U PARSER ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -143,7 +145,7 @@ jobs:
                       logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                       if logo_match: current_item['tvg_logo'] = logo_match.group(1)
 
-                  # >>> NEW: Capture Source User Agent <<<
+                  # Capture Source User Agent
                   elif line.startswith("#EXTVLCOPT"):
                       if "http-user-agent=" in line:
                           ua = line.split("http-user-agent=", 1)[1].strip()
@@ -163,7 +165,6 @@ jobs:
                               cookie_match = re.search(r'"cookie"\s*:\s*"([^"]+)"', line)
                               if cookie_match: current_item['cookie'] = cookie_match.group(1)
                           except: pass
-                      # Also capture UA from EXTHTTP if present
                       if "User-Agent" in line:
                           try:
                               ua_match = re.search(r'"User-Agent"\s*:\s*"([^"]+)"', line)
@@ -181,7 +182,6 @@ jobs:
           new_playlist_lines = []
           seen_channels = set()
           
-          # Default fallback UA
           DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
 
           def extract_from_source(url):
@@ -238,11 +238,10 @@ jobs:
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
                               
-                              # >>> DYNAMIC UA SELECTION <<<
-                              # Use the UA from the source if it exists, otherwise use default
                               current_ua = match.get("user_agent") or DEFAULT_UA
 
-                              is_jio = "jiotvmblive.cdn.jio.com" in link or "jiotvpllive.cdn.jio.com" in link
+                              # >>> FIX: UNIVERSAL JIO DETECTION <<<
+                              is_jio = "cdn.jio.com" in link 
                               is_zee = "zee5.com" in link
 
                               if is_jio:
@@ -276,7 +275,6 @@ jobs:
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type={drm_scheme}")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              # >>> USE CAPTURED UA <<<
                               new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={current_ua}")
 
                               if cookie:
