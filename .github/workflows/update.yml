@@ -56,7 +56,7 @@ jobs:
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television", "Makkal TV", "Puthu Yugam"
               ],
               "Movies": [
-                  "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", 
+                  "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
                   "J Movies", "Raj Digital Plus", "Star Movies HD", 
                   "Star Movies Select HD", 
               ],
@@ -64,8 +64,8 @@ jobs:
                    "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "Entertainment": [
-                  "Zee Tamil HD","Zee Tamil HD APAC", "Colors Infinity HD", "Zee Café HD",
-                  "&Flix HD", "&Prive HD", "MTV HD", "Disney International", "Nick HD+"
+                  "Colors Infinity HD", "Zee Cafe HD", "&Flix HD", "&Prive HD",
+                  "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
                   "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
@@ -122,13 +122,12 @@ jobs:
 
           def sanitize_link(link):
               if not link: return ""
-              # Remove TiviMate specific hacks like ||cookie and &xxx
               link = link.split("|")[0]
               link = link.split("&xxx=")[0]
               link = link.strip()
               return link
 
-          # --- 3. M3U PARSER ---
+          # --- 3. M3U PARSER (Now Extracts User Agent) ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -145,11 +144,16 @@ jobs:
                       logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                       if logo_match: current_item['tvg_logo'] = logo_match.group(1)
 
+                  # >>> NEW: Capture Source User Agent <<<
+                  elif line.startswith("#EXTVLCOPT"):
+                      if "http-user-agent=" in line:
+                          ua = line.split("http-user-agent=", 1)[1].strip()
+                          current_item['user_agent'] = ua
+                  
                   elif line.startswith("#KODIPROP"):
                       if "license_key=" in line:
                           key = line.split("license_key=", 1)[1].strip()
                           current_item['drmLicense'] = key
-                          current_item['drmScheme'] = 'clearkey'
                       elif "license_type=" in line:
                           type_val = line.split("license_type=", 1)[1].strip()
                           current_item['drmScheme'] = type_val
@@ -159,6 +163,12 @@ jobs:
                           try:
                               cookie_match = re.search(r'"cookie"\s*:\s*"([^"]+)"', line)
                               if cookie_match: current_item['cookie'] = cookie_match.group(1)
+                          except: pass
+                      # Also capture UA from EXTHTTP if present
+                      if "User-Agent" in line:
+                          try:
+                              ua_match = re.search(r'"User-Agent"\s*:\s*"([^"]+)"', line)
+                              if ua_match: current_item['user_agent'] = ua_match.group(1)
                           except: pass
 
                   elif line and not line.startswith("#"):
@@ -172,7 +182,8 @@ jobs:
           new_playlist_lines = []
           seen_channels = set()
           
-          USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
+          # Default fallback UA
+          DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
 
           def extract_from_source(url):
               try:
@@ -208,9 +219,6 @@ jobs:
                           ]
                           
                           if matches:
-                              # >>> CORRECT SORTING APPLIED <<<
-                              # 1. Prefer Clean links (0) over BTS links (1)
-                              # 2. Prefer shorter link names (fewer underscores)
                               matches.sort(key=lambda x: (
                                   1 if "BTS" in (x.get("link") or x.get("url") or "") else 0,
                                   (x.get("link") or x.get("url") or "").count("_")
@@ -230,6 +238,10 @@ jobs:
                               seen_channels.add(target_name.lower())
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
+                              
+                              # >>> DYNAMIC UA SELECTION <<<
+                              # Use the UA from the source if it exists, otherwise use default
+                              current_ua = match.get("user_agent") or DEFAULT_UA
 
                               is_jio = "jiotvmblive.cdn.jio.com" in link or "jiotvpllive.cdn.jio.com" in link
                               is_zee = "zee5.com" in link
@@ -242,15 +254,17 @@ jobs:
                                   if jio_token:
                                       link = f"{link}?{jio_token}"
                                       cookie = jio_token
+                                  drm_scheme = "clearkey"
                               
                               elif is_zee:
                                   cookie = None
+                                  if drm_license and not drm_scheme:
+                                      drm_scheme = "com.widevine.alpha"
 
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
                               
-                              # >>> RESTORE LOGO <<<
                               norm_target = normalize_name(name)
                               if norm_target in existing_logos:
                                   extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
@@ -258,15 +272,19 @@ jobs:
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
 
-                              if (drm_scheme == "clearkey" or "clearkey" in drm_scheme) and drm_license:
-                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type=clearkey")
+                              if drm_license:
+                                  if not drm_scheme: drm_scheme = "clearkey"
+                                  new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type={drm_scheme}")
                                   new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
                               
-                              new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={USER_AGENT}")
+                              # >>> USE CAPTURED UA <<<
+                              new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={current_ua}")
 
                               if cookie:
                                   clean_cookie = cookie.replace('"', '\\"')
                                   new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
+                              elif is_zee:
+                                  new_playlist_lines.append('#EXTHTTP:{"Referer":"https://www.zee5.com/"}')
                               
                               new_playlist_lines.append(link)
                               new_playlist_lines.append("")
@@ -279,12 +297,10 @@ jobs:
 
           if jio_token: print(f"Applied Jio Token: {jio_token[:20]}...")
 
-          # >>> SAFETY CHECK <<<
           if len(new_playlist_lines) < 5:
               print("CRITICAL ERROR: No channels found. Aborting write to prevent index.html corruption.")
               sys.exit(1)
 
-          # --- INJECT INTO INDEX.HTML ---
           start_marker = "# >>> JIO_AUTO_START"
           end_marker = "# >>> JIO_AUTO_END"
           
