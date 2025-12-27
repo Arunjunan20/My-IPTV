@@ -50,22 +50,21 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD","KTV HD",
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
                   "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One",
                   "Sun life","Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television", "Makkal TV", "Puthu Yugam"
               ],
               "Movies": [
-                  "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
-                  "J Movies", "Raj Digital Plus", "Star Movies HD", 
-                  "Star Movies Select HD", 
+                  "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
+                  "Star Movies HD", "Star Movies Select HD", 
               ],
               "Music": [
                    "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "Entertainment": [
-                  "Colors Infinity HD", "Zee Cafe HD", "&Flix HD", "&Prive HD",
-                  "MTV HD", "Disney International", "Nick HD+"
+                  "Zee Tamil HD APAC","Colors Infinity HD", "Zee Café HD", "&Flix HD",
+                  "&Prive HD", "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
                   "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
