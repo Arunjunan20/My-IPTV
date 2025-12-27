@@ -49,7 +49,7 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "Sun life",
                   "Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television",
@@ -58,7 +58,7 @@ jobs:
               "Movies": [
                   "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
                   "J Movies", "Raj Digital Plus", "Star Movies HD", 
-                  "Star Movies Select HD", "Sony Pix HD", "Colors Infinity HD", 
+                  "Star Movies Select HD", "Colors Infinity HD", 
                   "Zee Cafe HD", "&Flix HD", "&Prive HD"
               ],
               "Music": [
@@ -88,7 +88,12 @@ jobs:
               ]
           }
 
-          # --- 1. HARVEST EXISTING LOGOS ---
+          # --- HELPER: NORMALIZE NAMES ---
+          def normalize_name(name):
+              if not name: return ""
+              return name.lower().replace(" ", "").replace("_", "").replace("-", "").strip()
+
+          # --- 1. HARVEST EXISTING LOGOS (With Normalization) ---
           existing_logos = {}
           if os.path.exists(file_name):
               try:
@@ -100,10 +105,12 @@ jobs:
                                   ch_name = parts[1].strip()
                                   logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                                   if logo_match:
-                                      existing_logos[ch_name] = logo_match.group(1)
+                                      # Store logo using the NORMALIZED name as key
+                                      norm_key = normalize_name(ch_name)
+                                      existing_logos[norm_key] = logo_match.group(1)
               except Exception: pass
 
-          # --- 2. JIO GLOBAL TOKEN FINDER ---
+          # --- 2. GLOBAL TOKEN FINDER ---
           jio_token = None
 
           def find_tokens(items):
@@ -113,23 +120,15 @@ jobs:
                   if not jio_token and "__hdnea__=" in link:
                       match = re.search(r'(__hdnea__=[^"&|]*)', link)
                       if match: jio_token = match.group(1)
-                  # NOTE: We do NOT extract a global Zee token anymore. 
-                  # Zee tokens are often channel-specific.
-
-          # --- 3. HELPER FUNCTIONS ---
-          def normalize_name(name):
-              if not name: return ""
-              return name.lower().replace(" ", "").replace("_", "").replace("-", "").strip()
 
           def sanitize_link(link):
-              """Aggressively removes garbage from URLs"""
               if not link: return ""
               link = link.split("|")[0]
               link = link.split("&xxx=")[0]
               link = link.strip()
               return link
 
-          # --- 4. M3U PARSER ---
+          # --- 3. M3U PARSER ---
           def parse_m3u(content):
               items = []
               lines = content.splitlines()
@@ -169,7 +168,7 @@ jobs:
                           current_item = {} 
               return items
 
-          # --- 5. PROCESS SOURCE ---
+          # --- 4. PROCESS SOURCE ---
           new_playlist_lines = []
           seen_channels = set()
           
@@ -233,7 +232,6 @@ jobs:
                               is_zee = "zee5.com" in link
 
                               if is_jio:
-                                  # Force clean end for Jio
                                   if ".mpd" in link:
                                       base = link.split(".mpd")[0] + ".mpd"
                                       link = base
@@ -243,17 +241,16 @@ jobs:
                                       cookie = jio_token
                               
                               elif is_zee:
-                                  # NOTE: We do NOT overwrite Zee token globally.
-                                  # We use the link exactly as it came from the source (sanitized).
-                                  # We just clear the cookie because Zee5 uses URL tokens.
                                   cookie = None
 
                               extinf_parts = ["#EXTINF:-1"]
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
                               
-                              if name in existing_logos:
-                                  extinf_parts.append(f'tvg-logo="{existing_logos[name]}"')
+                              # >>> LOGO RESTORATION (NORMALIZED) <<<
+                              norm_target = normalize_name(name)
+                              if norm_target in existing_logos:
+                                  extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
                               
                               header = " ".join(extinf_parts) + "," + name
                               new_playlist_lines.append(header)
