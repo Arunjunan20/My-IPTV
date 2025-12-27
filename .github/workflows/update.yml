@@ -64,8 +64,8 @@ jobs:
                    "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "Entertainment": [
-                  "Zee Tamil HD APAC", "Colors Infinity HD", "Zee Café HD", "&Flix HD", "&Prive HD",
-                  "MTV HD", "Disney International", "Nick HD+"
+                  "Zee Tamil HD","Zee Tamil HD APAC", "Colors Infinity HD", "Zee Café HD",
+                  "&Flix HD", "&Prive HD", "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
                   "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
