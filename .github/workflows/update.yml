@@ -35,6 +35,7 @@ jobs:
           import json
           import os
           import re
+          import sys
 
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
@@ -49,42 +50,41 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
-                  "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "Sun life",
-                  "Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
-                  "D Tamil", "Jothi TV", "OM TV", "Tamilan Television",
-                  "Makkal TV", "Puthu Yugam"
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD","KTV HD",
+                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One",
+                  "Sun life","Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
+                  "D Tamil", "Jothi TV", "OM TV", "Tamilan Television", "Makkal TV", "Puthu Yugam"
               ],
               "Movies": [
-                  "KTV HD", "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
+                  "Zee Thirai", "Vijay Super HD", "Vijay Takkar", 
                   "J Movies", "Raj Digital Plus", "Star Movies HD", 
-                  "Star Movies Select HD", "Colors Infinity HD", 
-                  "Zee Cafe HD", "&Flix HD", "&Prive HD"
+                  "Star Movies Select HD", 
               ],
               "Music": [
-                  "Sun Music HD", "Raj Musix", "Jaya Max", "Tunes 6"
+                   "Raj Musix", "Jaya Max", "Tunes 6"
+              ],
+              "Entertainment": [
+                  "Colors Infinity HD", "Zee Cafe HD", "&Flix HD", "&Prive HD",
+                  "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
-                  "Sun News", "News7 Tamil", "Thanthi TV", 
-                  "Raj News 24x7", "Tamil Janam", "Jaya Plus", "M Nadu", "News J"
+                  "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
+                  "Tamil Janam", "Jaya Plus", "M Nadu", "News J"
               ],
               "Sports": [
                   "Star Sports 1 HD", "Star Sports 2 HD", "Star Sports 3", 
-                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD", "Eurosport HD",
-                  "Jio Sports HD"
+                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD",
+                  "Eurosport HD", "Jio Sports HD"
               ],
               "Kids": [
                   "Nick Tamil", "Sonic Tamil", "Pogo", "Cartoon Network",
                   "CN HD+ Tamil", "Chutti TV", "Disney Channel", "Disney Junior",
-                  "Disney International", "Hungama", "Super Hungama", 
-                  "Nick Jr", "Nick HD+", "Discovery Kids",
-                  "Sony Yay Hindi" 
+                  "Hungama", "Super Hungama", "Nick Jr", "Discovery Kids", "Sony Yay Hindi" 
               ],
               "Infotainment": [
-                  "History TV18 HD", "Discovery HD World", "National Geographic HD", 
-                  "Nat Geo Wild HD", "Animal Planet HD World", "Travelxp Tamil", 
-                  "Good Times", "Zee Zest HD", "Jio Specials HD",
-                  "Discovery Tamil", "Sony BBC Earth HD"
+                  "History TV18 HD", "Discovery HD World", "National Geographic HD", "Nat Geo Wild HD", 
+                  "Animal Planet HD World","Discovery Tamil", "Sony BBC Earth HD",
+                  "Travelxp Tamil", "Good Times", "Zee Zest HD", "Jio Specials HD",
               ]
           }
 
@@ -105,7 +105,6 @@ jobs:
                                   ch_name = parts[1].strip()
                                   logo_match = re.search(r'tvg-logo="([^"]+)"', line)
                                   if logo_match:
-                                      # Store logo using the NORMALIZED name as key
                                       norm_key = normalize_name(ch_name)
                                       existing_logos[norm_key] = logo_match.group(1)
               except Exception: pass
@@ -123,6 +122,7 @@ jobs:
 
           def sanitize_link(link):
               if not link: return ""
+              # Remove TiviMate specific hacks like ||cookie and &xxx
               link = link.split("|")[0]
               link = link.split("&xxx=")[0]
               link = link.strip()
@@ -208,8 +208,11 @@ jobs:
                           ]
                           
                           if matches:
+                              # >>> FLAW FIX: CORRECT SORTING <<<
+                              # 1. "BTS" gets score 1 (pushed to bottom), Clean links get score 0 (pushed to top)
+                              # 2. Count underscores (fewer is better)
                               matches.sort(key=lambda x: (
-                                  0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
+                                  1 if "BTS" in (x.get("link") or x.get("url") or "") else 0,
                                   (x.get("link") or x.get("url") or "").count("_")
                               ))
                               match = matches[0]
@@ -228,7 +231,7 @@ jobs:
 
                               cookie = match.get("cookie") or match.get("cookies") or ""
 
-                              is_jio = "jiotvmblive.cdn.jio.com" in link
+                              is_jio = "jiotvmblive.cdn.jio.com" in link or "jiotvpllive.cdn.jio.com" in link
                               is_zee = "zee5.com" in link
 
                               if is_jio:
@@ -247,7 +250,7 @@ jobs:
                               if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                               extinf_parts.append(f'group-title="{category}"')
                               
-                              # >>> LOGO RESTORATION (NORMALIZED) <<<
+                              # >>> RESTORE LOGO <<<
                               norm_target = normalize_name(name)
                               if norm_target in existing_logos:
                                   extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
@@ -276,6 +279,12 @@ jobs:
 
           if jio_token: print(f"Applied Jio Token: {jio_token[:20]}...")
 
+          # >>> FLAW FIX: SAFETY GUARD <<<
+          # If something went wrong and we found 0 channels, DO NOT overwrite the file.
+          if len(new_playlist_lines) < 5:
+              print("CRITICAL ERROR: No channels found. Aborting write to prevent index.html corruption.")
+              sys.exit(1)
+
           # --- INJECT INTO INDEX.HTML ---
           start_marker = "# >>> JIO_AUTO_START"
           end_marker = "# >>> JIO_AUTO_END"
@@ -286,7 +295,7 @@ jobs:
 
               if start_marker not in content or end_marker not in content:
                   print(f"Error: Markers not found in {file_name}")
-                  exit(1)
+                  sys.exit(1)
 
               pre_content = content.split(start_marker)[0]
               post_content = content.split(end_marker)[1]
@@ -306,10 +315,10 @@ jobs:
 
           except FileNotFoundError:
               print(f"Error: File {file_name} not found.")
-              exit(1)
+              sys.exit(1)
           except Exception as e:
               print(f"Error updating file: {e}")
-              exit(1)
+              sys.exit(1)
           EOF
           
           python update_script.py
