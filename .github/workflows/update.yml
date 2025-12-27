@@ -44,7 +44,7 @@ jobs:
           source_urls = [
               "https://livetv-cb7.pages.dev/hotstar",
               "https://ztv.pfy.workers.dev",
-              "https://z5.pfy.workers.dev"
+              "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
           # Categories
@@ -64,7 +64,7 @@ jobs:
                    "Raj Musix", "Jaya Max", "Tunes 6"
               ],
               "Entertainment": [
-                  "Colors Infinity HD", "Zee Café HD", "&Flix HD", "&Prive HD",
+                  "Colors Infinity HD", "Zee Cafe HD", "&Flix HD", "&Prive HD",
                   "MTV HD", "Disney International", "Nick HD+"
               ],
               "News": [
@@ -208,9 +208,9 @@ jobs:
                           ]
                           
                           if matches:
-                              # >>> FLAW FIX: CORRECT SORTING <<<
-                              # 1. "BTS" gets score 1 (pushed to bottom), Clean links get score 0 (pushed to top)
-                              # 2. Count underscores (fewer is better)
+                              # >>> CORRECT SORTING APPLIED <<<
+                              # 1. Prefer Clean links (0) over BTS links (1)
+                              # 2. Prefer shorter link names (fewer underscores)
                               matches.sort(key=lambda x: (
                                   1 if "BTS" in (x.get("link") or x.get("url") or "") else 0,
                                   (x.get("link") or x.get("url") or "").count("_")
@@ -279,8 +279,7 @@ jobs:
 
           if jio_token: print(f"Applied Jio Token: {jio_token[:20]}...")
 
-          # >>> FLAW FIX: SAFETY GUARD <<<
-          # If something went wrong and we found 0 channels, DO NOT overwrite the file.
+          # >>> SAFETY CHECK <<<
           if len(new_playlist_lines) < 5:
               print("CRITICAL ERROR: No channels found. Aborting write to prevent index.html corruption.")
               sys.exit(1)
