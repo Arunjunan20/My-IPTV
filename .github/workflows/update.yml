@@ -49,7 +49,7 @@ jobs:
           # Categories
           categories = {
               "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil", "Zee Tamil HD", "Kalaignar TV", 
+                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "Kalaignar TV", 
                   "Jaya TV HD", "Raj TV", "Adithya", "Thanthi One", "Sun life",
                   "Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", "Velicham TV", 
                   "D Tamil", "Jothi TV", "OM TV", "Tamilan Television",
