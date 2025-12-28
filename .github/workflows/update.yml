@@ -148,9 +148,10 @@ jobs:
               
               print("Phase 1: Harvesting Channels & Scanning for Tokens...")
               
-              for url in source_urls:
+              # Enumerate to track source priority (0 = Highest)
+              for priority_index, url in enumerate(source_urls):
                   try:
-                      print(f"Downloading: {url}...")
+                      print(f"Downloading Source {priority_index + 1}: {url}...")
                       response = requests.get(url, timeout=30)
                       response.raise_for_status()
                       content = response.text
@@ -179,8 +180,12 @@ jobs:
                           except json.JSONDecodeError: pass
                       
                       if parsed:
+                          # Tag items with priority
+                          for item in parsed:
+                              item['source_priority'] = priority_index
+                          
                           all_items.extend(parsed)
-                          print(f" -> Added {len(parsed)} channels.")
+                          print(f" -> Added {len(parsed)} channels from Source {priority_index + 1}.")
                           
                   except Exception as e:
                       print(f"Error fetching {url}: {e}")
@@ -221,8 +226,13 @@ jobs:
                       ]
                       
                       if matches:
+                          # >>> MULTI-LEVEL SORTING <<<
+                          # 1. Source Priority (0 is best, from first link)
+                          # 2. Prefer BTS (0 if BTS, 1 if clean)
+                          # 3. Clean Name (Fewer underscores)
                           matches.sort(key=lambda x: (
-                              1 if "BTS" in (x.get("link") or x.get("url") or "") else 0,
+                              x.get('source_priority', 99),
+                              0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
                               (x.get("link") or x.get("url") or "").count("_")
                           ))
                           match = matches[0]
