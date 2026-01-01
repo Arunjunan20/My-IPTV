@@ -1,4 +1,4 @@
-# My-IPTV (Tamil-IPTV)
+# Pocket TV
 
 A curated IPTV playlist focused on Tamil channels — including local Tamil channels, Tamil channels for overseas viewers, and a selection of English movie channels. This repository provides an M3U playlist (and EPG mapping via Tata Play) intended for personal use with common IPTV players.
 
@@ -97,6 +97,7 @@ http://example.com/stream_url.m3u8
 ## Contact / Issues
 - Found a broken stream or wrong EPG mapping? Open an issue in this repository with details (channel name, stream URL, and error).
 - Want to contribute? Fork the repo, make changes, and open a pull request.
+- Contact on Telegram 'https://t.me/Pocket_TV_Tamil'
 
 ---
 
@@ -110,4 +111,4 @@ http://example.com/stream_url.m3u8
 No license specified. If you want this project to be reusable under a recognized open-source license, add a LICENSE file (e.g., MIT, Apache-2.0) to the repository.
 
 ---
-Happy streaming — and thanks for using My-IPTV (Tamil-IPTV)!
+Happy streaming — and thanks for using Pocket TV!
