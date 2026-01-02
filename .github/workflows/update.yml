@@ -64,7 +64,7 @@ jobs:
               ],
               "Entertainment": [
                   "Zee Tamil HD APAC","Colors Infinity HD", "Zee Café HD", "&Flix HD",
-                  "&Prive HD", "MTV HD", "Disney International", "Nick HD+"
+                  "&Prive HD", "MTV HD", "Disney International HD", "Nick HD+"
               ],
               "News": [
                   "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
@@ -83,7 +83,7 @@ jobs:
               "Infotainment": [
                   "History TV18 HD", "Discovery HD World", "National Geographic HD", "Nat Geo Wild HD", 
                   "Animal Planet HD World","Discovery Tamil", "Sony BBC Earth HD",
-                  "Travelxp Tamil", "Good Times", "Zee Zest HD", "Jio Specials HD",
+                  "Travelxp Tamil", "Zee Zest HD", "Jio Specials HD",
               ]
           }
 
