@@ -42,8 +42,8 @@ jobs:
           
           # Source URLs
           source_urls = [
+              "https://jtvplus.streamflex.workers.dev/JTVPLUSONLY.m3u",
               "https://livetv-cb7.pages.dev/hotstar",
-              "https://ztv.pfy.workers.dev",
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
@@ -71,7 +71,7 @@ jobs:
                   "Tamil Janam", "Jaya Plus", "M Nadu", "News J"
               ],
               "Sports": [
-                  "Star Sports 1 HD", "Star Sports 2 HD", "Star Sports 3", 
+                  "Star Sports HD1", "Star Sports HD2", "Star Sports 3", 
                   "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD",
                   "Eurosport HD", "Jio Sports HD"
               ],
@@ -86,7 +86,6 @@ jobs:
                   "Travelxp Tamil", "Zee Zest HD", "Jio Specials HD",
               ]
           }
-
           # --- HELPER FUNCTIONS ---
           def normalize_name(name):
               if not name: return ""
@@ -227,9 +226,6 @@ jobs:
                       
                       if matches:
                           # >>> MULTI-LEVEL SORTING <<<
-                          # 1. Source Priority (0 is best, from first link)
-                          # 2. Prefer BTS (0 if BTS, 1 if clean)
-                          # 3. Clean Name (Fewer underscores)
                           matches.sort(key=lambda x: (
                               x.get('source_priority', 99),
                               0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
@@ -257,7 +253,6 @@ jobs:
 
                           # >>> FORCE APPLY TOKEN & COOKIE <<<
                           if is_jio:
-                              # Only clean Jio links to ensure token appends correctly
                               if ".mpd" in link:
                                   link = link.split(".mpd")[0] + ".mpd"
                               
@@ -272,6 +267,9 @@ jobs:
                               if drm_license and not drm_scheme:
                                   drm_scheme = "com.widevine.alpha"
 
+                          # >>> NAME CLEANING (Remove "Hindi") <<<
+                          clean_name = re.sub(r'\s*Hindi\s*', '', name, flags=re.IGNORECASE).strip()
+
                           # Build Output
                           extinf_parts = ["#EXTINF:-1"]
                           if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
@@ -281,7 +279,8 @@ jobs:
                           if norm_target in existing_logos:
                               extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
                           
-                          header = " ".join(extinf_parts) + "," + name
+                          # Use clean_name here
+                          header = " ".join(extinf_parts) + "," + clean_name
                           new_playlist_lines.append(header)
 
                           if drm_license:
