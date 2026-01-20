@@ -47,7 +47,7 @@ jobs:
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
-          # Categories (EXACTLY AS PROVIDED)
+          # Categories
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
@@ -192,7 +192,7 @@ jobs:
               if not jio_token:
                   print("WARNING: No Jio Token found. Jio channels may fail.")
 
-              # 3. Harvest Logos
+              # 3. Harvest Logos (ROBUST REGEX ADDED)
               existing_logos = {}
               if os.path.exists(file_name):
                   try:
@@ -202,7 +202,8 @@ jobs:
                                   parts = line.rsplit(',', 1)
                                   if len(parts) == 2:
                                       ch_name = parts[1].strip()
-                                      logo_match = re.search(r'tvg-logo="([^"]+)"', line)
+                                      # Supports single or double quotes
+                                      logo_match = re.search(r'tvg-logo=["\']([^"\']+)["\']', line)
                                       if logo_match:
                                           norm_key = normalize_name(ch_name)
                                           existing_logos[norm_key] = logo_match.group(1)
@@ -235,6 +236,9 @@ jobs:
                           
                           name = target_name
                           tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
+                          # >>> CAPTURE SOURCE LOGO <<<
+                          source_logo = match.get("tvg_logo") or match.get("logo") or ""
+                          
                           drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
                           drm_license = match.get("drmLicense") or match.get("license") or ""
                           
@@ -275,9 +279,18 @@ jobs:
                           if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
                           extinf_parts.append(f'group-title="{category}"')
                           
+                          # >>> FIXED LOGO LOGIC <<<
+                          # 1. Check CLEAN name (e.g. "Nick") because that is what's in the file
+                          norm_clean = normalize_name(clean_name)
+                          # 2. Check TARGET name (e.g. "Nick Hindi") just in case
                           norm_target = normalize_name(name)
-                          if norm_target in existing_logos:
+                          
+                          if norm_clean in existing_logos:
+                              extinf_parts.append(f'tvg-logo="{existing_logos[norm_clean]}"')
+                          elif norm_target in existing_logos:
                               extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
+                          elif source_logo:
+                              extinf_parts.append(f'tvg-logo="{source_logo}"')
                           
                           header = " ".join(extinf_parts) + "," + clean_name
                           new_playlist_lines.append(header)
