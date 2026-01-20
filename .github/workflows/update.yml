@@ -192,8 +192,8 @@ jobs:
               if not jio_token:
                   print("WARNING: No Jio Token found. Jio channels may fail.")
 
-              # 3. Harvest Logos (ROBUST REGEX ADDED)
-              existing_logos = {}
+              # 3. Harvest EXISTING Data (Logos AND IDs) to retain them
+              existing_data = {}
               if os.path.exists(file_name):
                   try:
                       with open(file_name, "r", encoding="utf-8") as f:
@@ -202,11 +202,19 @@ jobs:
                                   parts = line.rsplit(',', 1)
                                   if len(parts) == 2:
                                       ch_name = parts[1].strip()
-                                      # Supports single or double quotes
+                                      norm_key = normalize_name(ch_name)
+                                      
+                                      existing_data[norm_key] = {}
+                                      
+                                      # Capture Logo
                                       logo_match = re.search(r'tvg-logo=["\']([^"\']+)["\']', line)
                                       if logo_match:
-                                          norm_key = normalize_name(ch_name)
-                                          existing_logos[norm_key] = logo_match.group(1)
+                                          existing_data[norm_key]['logo'] = logo_match.group(1)
+                                          
+                                      # Capture ID
+                                      id_match = re.search(r'tvg-id=["\']([^"\']+)["\']', line)
+                                      if id_match:
+                                          existing_data[norm_key]['id'] = id_match.group(1)
                   except Exception: pass
 
               # 4. Generate Playlist
@@ -235,9 +243,10 @@ jobs:
                           match = matches[0]
                           
                           name = target_name
-                          tvg_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
-                          # >>> CAPTURE SOURCE LOGO <<<
-                          source_logo = match.get("tvg_logo") or match.get("logo") or ""
+                          
+                          # >>> INITIALIZE WITH SOURCE VALUES <<<
+                          final_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
+                          final_logo = match.get("tvg_logo") or match.get("logo") or ""
                           
                           drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
                           drm_license = match.get("drmLicense") or match.get("license") or ""
@@ -274,23 +283,24 @@ jobs:
                           # >>> NAME CLEANING (Remove "Hindi") <<<
                           clean_name = re.sub(r'\s*Hindi\s*', '', name, flags=re.IGNORECASE).strip()
 
-                          # Build Output
-                          extinf_parts = ["#EXTINF:-1"]
-                          if tvg_id: extinf_parts.append(f'tvg-id="{tvg_id}"')
-                          extinf_parts.append(f'group-title="{category}"')
-                          
-                          # >>> FIXED LOGO LOGIC <<<
-                          # 1. Check CLEAN name (e.g. "Nick") because that is what's in the file
+                          # >>> RETAIN EXISTING DATA LOGIC <<<
                           norm_clean = normalize_name(clean_name)
-                          # 2. Check TARGET name (e.g. "Nick Hindi") just in case
                           norm_target = normalize_name(name)
                           
-                          if norm_clean in existing_logos:
-                              extinf_parts.append(f'tvg-logo="{existing_logos[norm_clean]}"')
-                          elif norm_target in existing_logos:
-                              extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
-                          elif source_logo:
-                              extinf_parts.append(f'tvg-logo="{source_logo}"')
+                          # Check clean name first (e.g. "Nick")
+                          if norm_clean in existing_data:
+                              if 'id' in existing_data[norm_clean]: final_id = existing_data[norm_clean]['id']
+                              if 'logo' in existing_data[norm_clean]: final_logo = existing_data[norm_clean]['logo']
+                          # Check raw target name second (e.g. "Nick Hindi")
+                          elif norm_target in existing_data:
+                              if 'id' in existing_data[norm_target]: final_id = existing_data[norm_target]['id']
+                              if 'logo' in existing_data[norm_target]: final_logo = existing_data[norm_target]['logo']
+
+                          # Build Output
+                          extinf_parts = ["#EXTINF:-1"]
+                          if final_id: extinf_parts.append(f'tvg-id="{final_id}"')
+                          extinf_parts.append(f'group-title="{category}"')
+                          if final_logo: extinf_parts.append(f'tvg-logo="{final_logo}"')
                           
                           header = " ".join(extinf_parts) + "," + clean_name
                           new_playlist_lines.append(header)
