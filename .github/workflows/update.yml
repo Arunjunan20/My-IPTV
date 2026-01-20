@@ -40,14 +40,14 @@ jobs:
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs
+          # Source URLs (Top = Highest Priority)
           source_urls = [
               "https://jtvplus.streamflex.workers.dev/JTVPLUSONLY.m3u",
               "https://livetv-cb7.pages.dev/hotstar",
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
-          # Categories
+          # Categories (EXACTLY AS PROVIDED)
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
@@ -76,16 +76,17 @@ jobs:
                   "Eurosport HD", "Jio Sports HD"
               ],
               "Kids": [
-                  "Nick Tamil", "Sonic Tamil", "Pogo", "Cartoon Network",
-                  "CN HD+ Tamil", "Chutti TV", "Disney Channel", "Disney Junior",
-                  "Hungama", "Super Hungama", "Nick Jr", "Discovery Kids", "Sony Yay Hindi" 
+                  "Nick Hindi", "Sonic Hindi", "Pogo Hindi", "Cartoon Network Hindi",
+                  "Cartoon Network HD+ Hindi", "Chutti TV", "Disney Channel", "Disney Junior",
+                  "Hungama", "Super Hungama", "Nick Jr", "Discovery Kids Hindi", "Sony Yay Hindi" 
               ],
               "Infotainment": [
-                  "History TV18 HD", "Discovery HD World", "National Geographic HD", "Nat Geo Wild HD", 
-                  "Animal Planet HD World","Discovery Tamil", "Sony BBC Earth HD",
+                  "History TV18 HD", "Discovery HD Hindi", "National Geographic HD", "Nat Geo Wild HD",
+                  "Animal Planet HD Hindi", "Sony BBC Earth HD",
                   "Travelxp Tamil", "Zee Zest HD", "Jio Specials HD",
               ]
           }
+
           # --- HELPER FUNCTIONS ---
           def normalize_name(name):
               if not name: return ""
@@ -147,7 +148,6 @@ jobs:
               
               print("Phase 1: Harvesting Channels & Scanning for Tokens...")
               
-              # Enumerate to track source priority (0 = Highest)
               for priority_index, url in enumerate(source_urls):
                   try:
                       print(f"Downloading Source {priority_index + 1}: {url}...")
@@ -279,7 +279,6 @@ jobs:
                           if norm_target in existing_logos:
                               extinf_parts.append(f'tvg-logo="{existing_logos[norm_target]}"')
                           
-                          # Use clean_name here
                           header = " ".join(extinf_parts) + "," + clean_name
                           new_playlist_lines.append(header)
 
