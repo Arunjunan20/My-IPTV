@@ -51,29 +51,26 @@ jobs:
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
-                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV", "Thanthi One",
-                  "Sun life","Polimer TV", "Vendhar TV", "Madhimugam TV", "MK Six", 
-                  "D Tamil", "Jothi TV", "OM TV", "Puthu Yugam"
+                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV",
+                  "Sun life"
               ],
               "Movies": [
                   "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
                   "Star Movies HD", "Star Movies Select HD", 
               ],
               "Music": [
-                   "Raj Musix", "Jaya Max", "Tunes 6"
+                   "Raj Musix", "Jaya Max"
               ],
               "Entertainment": [
                   "Zee Tamil HD APAC","Colors Infinity HD", "Zee Café HD", "&Flix HD",
                   "&Prive HD", "MTV HD", "Disney International HD", "Nick HD+"
               ],
               "News": [
-                  "Sun News", "News7 Tamil", "Thanthi TV", "Raj News 24x7", 
-                  "Tamil Janam", "Jaya Plus", "M Nadu", "News J"
+                  "Sun News", "News7 Tamil", "Thanthi TV"
               ],
               "Sports": [
                   "Star Sports HD1", "Star Sports HD2", "Star Sports 3", 
-                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD",
-                  "Eurosport HD", "Jio Sports HD"
+                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD"
               ],
               "Kids": [
                   "Nick Hindi", "Sonic Hindi", "Pogo Hindi", "Cartoon Network Hindi",
@@ -82,8 +79,7 @@ jobs:
               ],
               "Infotainment": [
                   "History TV18 HD", "Discovery HD Hindi", "National Geographic HD", "Nat Geo Wild HD",
-                  "Animal Planet HD Hindi", "Sony BBC Earth HD",
-                  "Travelxp Tamil", "Zee Zest HD", "Jio Specials HD",
+                  "Animal Planet HD Hindi", "Sony BBC Earth HD","Zee Zest HD"
               ]
           }
 
