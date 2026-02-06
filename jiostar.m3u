@@ -1,4 +1,6 @@
-#EXTM3U x-tvg-url="https://raw.githubusercontent.com/mitthu786/tvepg/main/tataplay/epg.xml"
+#EXTM3U
+
+#EXTM3U x-tvg-url="https://epghub.xyz/epg/EPG-IN.xml.gz"
 
 #EXTINF:-1 tvg-id="1132" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Plus_HD.png" group-title="Entertainment",Star Plus HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
