@@ -7,13 +7,6 @@
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="1116" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Plus.png" group-title="Entertainment",Star Plus
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=3bba2ffaf08b501796c5d9eb431460a4:7a62074c4c46f3b153259526481c02bf
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_BTS/output/index.mpd
-
 #EXTINF:-1 tvg-id="931" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Bharat_HD.png" group-title="Entertainment",Star Bharat HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=701524f373c55b2785ac49aab0bdc4a6:9de42eedb40f6c243848eb8aa8103e32
@@ -213,7 +206,7 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/DD_Rajasthan_Jaipur_BTS/output/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/DD_Uttar_Pradesh_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="1375" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Disney_International_HD.png" group-title="Entertainment",Disney International HD
+#EXTINF:-1 tvg-id="1375" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Disney_International_HD.png" group-title="English",Disney International HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=d0e021aa91c65e68a7028c2a6a762eca:d50822403365e360d12840251cecee84
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
@@ -881,13 +874,6 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Jio_Events_BTS/output/index.mpd
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Wild_Earth_BTS/output/index.mpd
-
-#EXTINF:-1 tvg-id="248" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/MTV.png" group-title="Music",MTV
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=3af9106a677854a1b9f043eed3124e02:1e042abd297460e5031f50ddb6116d0f
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/MTV_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="2753" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/YRF_Music.png" group-title="Music",YRF Music
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -1678,6 +1664,21 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Vissa_TV_BTS/output/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/VRLive_BTS/output/index.mpd
 
+#EXTINF:-1 tvg-id="896" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_TV_HD.png" group-title="Tamil",Sun TV HD
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=f415c124a07c595b97c43cc9a96ded30:59e6c93d4fe43353b34a71eb87185aaa
+#KODIPROP:inputstream.adaptive.manifest_type=mpd
+#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
+https://jiotvpllive.cdn.jio.com/bpk-tv/Sun_TV_HD_MOB/WDVLive/index.mpd
+
+
+#EXTINF:-1 tvg-id="894" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/KTV_HD.png" group-title="Tamil",KTV HD
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=ba9bfe750a56514e9c63c456fad1e428:e0ca0ee9dbaac2942753d928b92824c5
+#KODIPROP:inputstream.adaptive.manifest_type=mpd
+#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
+https://jiotvpllive.cdn.jio.com/bpk-tv/KTV_HD_MOB/WDVLive/index.mpd
+
 #EXTINF:-1 tvg-id="368" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Vijay_HD.png" group-title="Tamil",Star Vijay HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=849d6b062b645abea937ec7f2b6b1686:1f65503420b88d11a16d4a4eacd95f0f
@@ -1697,6 +1698,20 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeTamilHD_MOB/WDVLive/index.mpd
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsTamilHD_BTS/output/index.mpd
+
+#EXTINF:-1 tvg-id="895" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_Music_HD.png" group-title="Tamil",Sun Music HD
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=fa0c0f2dd6ce50208b77e16976e38d90:7f83a8e5178b6562d81968886fc3fe8a
+#KODIPROP:inputstream.adaptive.manifest_type=mpd
+#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
+https://jiotvpllive.cdn.jio.com/bpk-tv/Sun_Music_HD_MOB/WDVLive/index.mpd
+
+#EXTINF:-1 tvg-id="1209" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Kalaignar_TV.png" group-title="Tamil",Kalaignar TV
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=75dfe3fa680c58d6bc94815950c7d4f0:480cd1106bfb291a5735b0f9dc71bded
+#KODIPROP:inputstream.adaptive.manifest_type=mpd
+#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
+https://jiotvpllive.cdn.jio.com/bpk-tv/Kalaignar_TV_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="3266" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Vijay_Super_HD.png" group-title="Tamil",Vijay Super HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -1719,26 +1734,12 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Vijay_Takkar_BTS/output/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeThiraiHD_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="896" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_TV_HD.png" group-title="Tamil",Sun TV HD
+#EXTINF:-1 tvg-id="419" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Jaya_TV_HD.png" group-title="Tamil",Jaya TV HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=f415c124a07c595b97c43cc9a96ded30:59e6c93d4fe43353b34a71eb87185aaa
+#KODIPROP:inputstream.adaptive.license_key=b53a72551ecd5f5a93785ab2eea2c04a:91c08ce0ece5d6c8c167b104a7c9ab00
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Sun_TV_HD_MOB/WDVLive/index.mpd
-
-#EXTINF:-1 tvg-id="1209" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Kalaignar_TV.png" group-title="Tamil",Kalaignar TV
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=75dfe3fa680c58d6bc94815950c7d4f0:480cd1106bfb291a5735b0f9dc71bded
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Kalaignar_TV_BTS/output/index.mpd
-
-#EXTINF:-1 tvg-id="894" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/KTV_HD.png" group-title="Tamil",KTV HD
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=ba9bfe750a56514e9c63c456fad1e428:e0ca0ee9dbaac2942753d928b92824c5
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/KTV_HD_MOB/WDVLive/index.mpd
+https://jiotvpllive.cdn.jio.com/bpk-tv/Jaya_TV_HD_MOB/WDVLive/index.mpd
 
 #EXTINF:-1 tvg-id="682" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_Life.png" group-title="Tamil",Sun Life
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -1747,26 +1748,17 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/KTV_HD_MOB/WDVLive/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Sun_Life_MOB/WDVLive/index.mpd
 
-#EXTINF:-1 tvg-id="895" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_Music_HD.png" group-title="Tamil",Sun Music HD
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=fa0c0f2dd6ce50208b77e16976e38d90:7f83a8e5178b6562d81968886fc3fe8a
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Sun_Music_HD_MOB/WDVLive/index.mpd
-
-#EXTINF:-1 tvg-id="419" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Jaya_TV_HD.png" group-title="Tamil",Jaya TV HD
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=b53a72551ecd5f5a93785ab2eea2c04a:91c08ce0ece5d6c8c167b104a7c9ab00
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Jaya_TV_HD_MOB/WDVLive/index.mpd
-
 #EXTINF:-1 tvg-id="417" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/J_Movies.png" group-title="Tamil",J Movies
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=8d8f492ff22d594da8fbad2ecb4083a9:7dc1d6d4fb9d35ad2e42c9c9a112d8c2
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/J_Movies_MOB/WDVLive/index.mpd
+
+#EXTINF:-1 tvg-id="647" tvg-logo="https://tatalogo.pages.dev/647.png" group-title="Tamil", Isai Aruvi
+https://segment.yuppcdn.net/140622/isaiaruvi/playlist.m3u8
+#EXTINF:-1 tvg-id="611" tvg-name="Sirippoli" tvg-logo="https://tatalogo.pages.dev/611.png" group-title="Tamil", Sirippoli
+https://segment.yuppcdn.net/240122/siripoli/playlist.m3u8
 
 #EXTINF:-1 tvg-id="420" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Jaya_Max.png" group-title="Tamil",Jaya Max
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -1795,6 +1787,11 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Adithya_TV_MOB/WDVLive/index.mpd
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Chutti_TV_MOB/WDVLive/index.mpd
+
+#EXTINF:-1 tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/CHIT_Thumbnail-v1/CHIT_Thumbnail.png" group-title="Tamil", Chithiram
+https://cdn-6.pishow.tv/live/1243/master.m3u8
+#EXTINF:-1 tvg-id="ts411" tvg-logo="https://tatalogo.pages.dev/411.png" group-title="Tamil", Murasu
+https://segment.yuppcdn.net/050522/murasu/playlist.m3u8
 
 #EXTINF:-1 tvg-id="3430" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/DiscoveryTam.png" group-title="Tamil",Discovery Tamil
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -5441,33 +5438,12 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Propex_TV_BTS/output/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Smriti_Patra_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="574" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/TLC_English.png" group-title="Lifestyle",TLC English
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=e50aa8136d3f58bc97b00d2cc9e6517e:c5be8d5c21caee8ec290d4ac6a558b22
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/TLC_Hindi_MOB/WDVLive/index.mpd
-
-#EXTINF:-1 tvg-id="479" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/TLC_HD_World.png" group-title="Lifestyle",TLC HD English
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=ef9f76e7a4e25534a349c65c6b5e7122:db439de64495212588ce839126b2923f
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/TLC_HD_World_BTS/output/index.mpd
-
-#EXTINF:-1 tvg-id="3458" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/TLCHDHindi.png" group-title="Lifestyle",TLC HD Hindi
+#EXTINF:-1 tvg-id="3458" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/TLCHDHindi.png" group-title="Lifestyle",TLC HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=https://aqfadtv.xyz/clearkey/results.php?keyid=5efbe8c07fea5e4088f65d86fdfbf722&key=9b6371c0e564b4b1fbafad90e9f26dbf
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/TLCHDHindi_BTS/output/index.mpd
-
-#EXTINF:-1 tvg-id="571" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/TLC_Hindi.png" group-title="Lifestyle",TLC Hindi
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=cb10cf5381f958029431b19f62a81959:a6a51457e5aac769a422d8341a1c8dde
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/TLC_Hindi_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="164" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Travel_XP_HD.png" group-title="Lifestyle",Travelxp HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -5475,13 +5451,6 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/TLC_Hindi_BTS/output/index.mpd
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/Travel_XP_HD_BTS/output/index.mpd
-
-#EXTINF:-1 tvg-id="562" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Travel_XP.png" group-title="Lifestyle",Travelxp HD Hindi
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=39aa887ebbc35db6bd10217aba5e016b:a1862a47f6db0af137d0c69b3cb422bb
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/Travel_XP_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="1292" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Wellness_TV.png" group-title="Lifestyle",Wellness
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -6516,15 +6485,30 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Sadhna_Gold_BTS/output/index.mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/9x_Jhakaas_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="587" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/9XM.png" group-title="Music",9XM
-https://d14c63magvk61v.cloudfront.net/strm/channels/9xm/master.m3u8
+#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/9XM.png" group-title="Music",9XM
+#KODIPROP:inputstream.adaptive.license_type=clearkey
+#KODIPROP:inputstream.adaptive.license_key=29f970f3bdef4935b7b2b6ace0316266:8e7efefcf8c843a184977c6c7063487c
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/9xm2/default/main.mpd
+
+#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/9X_Jalwa.png" group-title="Music",9X Jalwa
+#KODIPROP:inputstream.adaptive.license_type=clearkey
+#KODIPROP:inputstream.adaptive.license_key=0538cf4c5ed546a9956aadab2fdf3366:b0af534e1a5f459f9c751a0cb9d12d4c
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/9xjalwa2/default/main.mpd
+
+#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/9X_Tashan.png" group-title="Music",9X Tashan
+#KODIPROP:inputstream.adaptive.license_type=clearkey
+#KODIPROP:inputstream.adaptive.license_key=5774f9c8093547ac8796445049163c00:2716fd8f71974ffa82e68e198c8d91d6
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/9xtashan2/default/main.mpd
+
+#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/9x_Jhakaas.png" group-title="Music",9X Jhakkas
+#KODIPROP:inputstream.adaptive.license_type=clearkey
+#KODIPROP:inputstream.adaptive.license_key=5911de35875644f4a48ee9d426be297f:4316b9b0a9814b4381425e1b01886dc5
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/9xjhakaas2/default/main.mpd
 
 #EXTINF:-1 tvg-id="585" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Zing.png" group-title="Music",Zing
-#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=6e3fc1cc465555d1b363956ffde841d1:0cf7740c073db99345434d263c142148
-#KODIPROP:inputstream.adaptive.manifest_type=mpd
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/9XM_BTS/output/index.mpd
+#KODIPROP:inputstream.adaptive.license_type=clearkey
+#KODIPROP:inputstream.adaptive.license_key=f0fb14eebe474a6ab74c8301d55a7224:f9f8b2e30704458b8db844a285ce32be
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Zing/default/manifest.mpd
 
 #EXTINF:-1 tvg-id="620" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/ETV_News_Gujarati.png" group-title="Gujarati",News18 Gujarati
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
