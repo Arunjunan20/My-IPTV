@@ -432,12 +432,12 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/SonyPIX_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="1322" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/And_Flix_HD.png" group-title="English",&Flix HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://elitebeam.shop/Jtv/keys.php?id=1322&token=4G1FAN
+#KODIPROP:inputstream.adaptive.license_key=null
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/AndFlixHD_BTS/output/index.mpd
 
-#EXTINF:-1 tvg-id="1349" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/And_Prive_HD.png" group-title="English",And Prive HD
+#EXTINF:-1 tvg-id="1349" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/And_Prive_HD.png" group-title="English",&Prive HD
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=5060ddebb51c57a1825a18ca70e24014:e61277adab8ff7dd8314ae0287556787
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
@@ -732,10 +732,10 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/CNHDHindi_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="816" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Cartoon_Network_Hindi.png" group-title="Kids",Cartoon Network
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://elitebeam.shop/Jtv/keys.php?id=3051&token=4G1FAN
+#KODIPROP:inputstream.adaptive.license_key=ea48cf7b24dd54dd98c369626b9ad105:ee5778d627dfae2c2affc02d76e8db6c
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvpllive.cdn.jio.com/bpk-tv/CNHindi_MOB/WDVLive/index.mpd
+https://jiotvbpkmob.cdn.jio.com/bpk-tv/CNHindi_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="1780" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Hoopla_Kids_TV.png" group-title="Kids",HooplaKidz TV
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -1717,7 +1717,7 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Vijay_Takkar_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="3051" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/ZeeThiraiHD.png" group-title="Tamil",Zee Thirai HD
 #KODIPROP:inputstream.adaptive.license_type=clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://game.denver69.fun/Jtv/key.php?id=3051&token=YoEL0H
+#KODIPROP:inputstream.adaptive.license_key=f533110565935b4899a9440721d330fc:fafd814a78b22b6ada60c15964e1d09b
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeThiraiHD_BTS/output/index.mpd
