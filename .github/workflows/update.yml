@@ -51,7 +51,7 @@ jobs:
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
-                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV,"Sun life"
+                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV","Sun life"
               ],
               "Movies": [
                   "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
