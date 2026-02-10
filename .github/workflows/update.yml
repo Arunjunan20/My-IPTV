@@ -44,7 +44,7 @@ jobs:
           
           # Source URLs (Top = Highest Priority)
           source_urls = [
-              "https://j-plus.free.nf/jtv/jtv.m3u.php",
+              "https://jtvplus.streamflex.workers.dev/JTVPLUSONLY.m3u",
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
