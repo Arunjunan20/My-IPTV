@@ -51,8 +51,8 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/output/index.mpd
 #EXTINF:-1 tvg-id="279" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/ColorsRishtey.png" group-title="Entertainment",Colors Rishtey
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=190829c4e2b05b8ca547d2cd30ab3bba:a28225e91492ce2d6601874c701bf9bd
-#EXTVLCOPT:http-user-agent=@allinone_reborn
-https://jiotvmblive.cdn.jio.com/bpk-tv/ColorsRishtey_BTS/output/index.mpd
+#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
+https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsRishtey_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="474" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/SonyPAL.png" group-title="Entertainment",Sony Pal
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -379,12 +379,6 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Utsav_Movies_BTS/output/index.mpd
 #KODIPROP:inputstream.adaptive.license_key=d5f46c3bb170561ab93db79c032825b5:a834101c520ab2af65add91e5e9a2b61
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeAnmolCinema_MOB/WDVLive/index.mpd
-
-#EXTINF:-1 tvg-id="1244" group-title="Movies" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Colors_Cineplex.png",Colors Cineplex
-#KODIPROP:inputstream.adaptive.license_type=clearkey
-#KODIPROP:inputstream.adaptive.license_key=b9d4acedc66c5660a1e06197a55bccd2:dd53bab1a42f41ae8f0a5c8fd286f456
-#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvmblive.cdn.jio.com/bpk-tv/Colors_Cineplex_MOB/WDVLive/index.mpd
 
 #EXTINF:-1 tvg-id="1763" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/ColorsCineplexBollywood.png" group-title="Movies",Colors Cineplex Bollywood
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
@@ -953,7 +947,7 @@ https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeMarathiHD_MOB/WDVLive/index.mpd
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=95b726ce54c05713ac6bf540ee64ca87:8e1bc81913c474311b79ca988c087f2a
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
-https://jiotvmblive.cdn.jio.com/bpk-tv/ZeeChitramandir_BTS/output/index.mpd
+https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeChitramandir_BTS/output/index.mpd
 
 #EXTINF:-1 tvg-id="2424" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_Marathi.png" group-title="Marathi",Sun Marathi
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
