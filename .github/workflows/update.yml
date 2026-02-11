@@ -36,21 +36,24 @@ jobs:
           import os
           import re
           import sys
+          import time
+          from datetime import datetime
 
           # --- CONFIGURATION ---
           file_name = os.getenv("FILE_NAME", "index.html")
           
-          # Source URLs (Top = Highest Priority)
+          # Source URLs
           source_urls = [
               "https://livetv.cb7.pages.dev/hotstar",
-              "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
+              "https://ztv.pfy.workers.dev" 
           ]
 
           # Categories
           categories = {
               "Tamil": [
                   "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
-                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV","Sun life"
+                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV",
+                  "Sun life"
               ],
               "Movies": [
                   "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
@@ -71,7 +74,7 @@ jobs:
                   "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD"
               ],
               "Kids": [
-                  "Nick Hindi", "Sonic Hindi", "Pogo Hindi",
+                  "Nick Hindi", "Sonic Hindi", "Pogo Hindi", "Cartoon Network Hindi",
                   "Cartoon Network HD+ Hindi", "Chutti TV", "Disney Channel", "Disney Junior",
                   "Hungama", "Super Hungama", "Nick Jr", "Sony Yay Hindi" 
               ],
@@ -84,7 +87,7 @@ jobs:
           # --- HELPER FUNCTIONS ---
           def normalize_name(name):
               if not name: return ""
-              return name.lower().replace(" ", "").replace("_", "").replace("-", "").strip()
+              return str(name).lower().replace(" ", "").replace("_", "").replace("-", "").strip()
 
           # --- PARSER ---
           def parse_m3u(content):
@@ -139,27 +142,37 @@ jobs:
           def main():
               all_items = []
               jio_token = None
+              timestamp = int(time.time())
               
               print("Phase 1: Harvesting Channels & Scanning for Tokens...")
               
-              for priority_index, url in enumerate(source_urls):
+              headers = {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+              }
+
+              for priority_index, base_url in enumerate(source_urls):
                   try:
+                      # Add Cache Buster
+                      separator = "&" if "?" in base_url else "?"
+                      url = f"{base_url}{separator}t={timestamp}"
+                      
                       print(f"Downloading Source {priority_index + 1}: {url}...")
-                      response = requests.get(url, timeout=30)
+                      response = requests.get(url, headers=headers, timeout=30)
                       response.raise_for_status()
                       content = response.text
                       
-                      # NUCLEAR SEARCH: Scan raw text for token
+                      # NUCLEAR SEARCH: Robust Token Extraction
                       if not jio_token and "__hdnea__=" in content:
-                          print(" -> Found potential token in raw text...")
-                          token_match = re.search(r'(__hdnea__=[^";&]*)', content)
+                          print(" -> Scanning for fresh Jio Token...")
+                          # Capture token until quote, ampersand, or whitespace
+                          token_match = re.search(r'(__hdnea__=[^"&\s]*)', content)
                           if token_match:
                               jio_token = token_match.group(1)
-                              print(f" -> GLOBAL TOKEN SECURED: {jio_token[:20]}...")
+                              print(f" -> NEW TOKEN FOUND: {jio_token[:25]}...")
 
-                      # Parse
+                      # Parse M3U or JSON
                       parsed = []
-                      if content.strip().startswith("#EXTM3U") or ".m3u" in url or "hotstar" in url:
+                      if content.strip().startswith("#EXTM3U") or ".m3u" in base_url or "hotstar" in base_url:
                           parsed = parse_m3u(content)
                       else:
                           try:
@@ -170,23 +183,22 @@ jobs:
                                   elif "list" in data: parsed = data["list"]
                                   else: parsed = [data]
                               elif isinstance(data, list): parsed = data
-                          except json.JSONDecodeError: pass
+                          except json.JSONDecodeError: 
+                              print(" -> Failed to parse as JSON or M3U")
                       
                       if parsed:
-                          # Tag items with priority
                           for item in parsed:
                               item['source_priority'] = priority_index
-                          
                           all_items.extend(parsed)
-                          print(f" -> Added {len(parsed)} channels from Source {priority_index + 1}.")
+                          print(f" -> Added {len(parsed)} channels.")
                           
                   except Exception as e:
-                      print(f"Error fetching {url}: {e}")
+                      print(f"Error fetching source: {e}")
 
               if not jio_token:
-                  print("WARNING: No Jio Token found. Jio channels may fail.")
+                  print("WARNING: No Jio Token found. Links might be expired.")
 
-              # 3. Harvest EXISTING Data (Logos AND IDs) to retain them
+              # 3. HARVEST EXISTING DATA (Logos/IDs)
               existing_data = {}
               if os.path.exists(file_name):
                   try:
@@ -197,18 +209,12 @@ jobs:
                                   if len(parts) == 2:
                                       ch_name = parts[1].strip()
                                       norm_key = normalize_name(ch_name)
-                                      
                                       existing_data[norm_key] = {}
                                       
-                                      # Capture Logo
                                       logo_match = re.search(r'tvg-logo=["\']([^"\']+)["\']', line)
-                                      if logo_match:
-                                          existing_data[norm_key]['logo'] = logo_match.group(1)
-                                          
-                                      # Capture ID
+                                      if logo_match: existing_data[norm_key]['logo'] = logo_match.group(1)
                                       id_match = re.search(r'tvg-id=["\']([^"\']+)["\']', line)
-                                      if id_match:
-                                          existing_data[norm_key]['id'] = id_match.group(1)
+                                      if id_match: existing_data[norm_key]['id'] = id_match.group(1)
                   except Exception: pass
 
               # 4. Generate Playlist
@@ -221,14 +227,13 @@ jobs:
                   for target_name in targets:
                       if target_name.lower() in seen_channels:
                           continue
-
+                      
                       matches = [
                           item for item in all_items 
-                          if normalize_name(item.get("name") or item.get("title")) == normalize_name(target_name)
+                          if normalize_name(item.get("name") or item.get("title") or item.get("id")) == normalize_name(target_name)
                       ]
                       
                       if matches:
-                          # >>> MULTI-LEVEL SORTING <<<
                           matches.sort(key=lambda x: (
                               x.get('source_priority', 99),
                               0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
@@ -236,16 +241,28 @@ jobs:
                           ))
                           match = matches[0]
                           
+                          # 1. RENAME FIRST
                           name = target_name
+                          clean_name = re.sub(r'\s*Hindi\s*', '', name, flags=re.IGNORECASE).strip()
+                          if clean_name.lower() == "adithya tv":
+                              clean_name = "Adithya"
+
+                          # 2. DATA LOOKUP
+                          norm_final_name = normalize_name(clean_name)
                           
-                          # >>> INITIALIZE WITH SOURCE VALUES <<<
                           final_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
                           final_logo = match.get("tvg_logo") or match.get("logo") or ""
                           
+                          if norm_final_name in existing_data:
+                              if 'id' in existing_data[norm_final_name]: 
+                                  final_id = existing_data[norm_final_name]['id']
+                              if 'logo' in existing_data[norm_final_name]: 
+                                  final_logo = existing_data[norm_final_name]['logo']
+
+                          # --- PROCESSING ---
                           drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
                           drm_license = match.get("drmLicense") or match.get("license") or ""
                           
-                          # >>> NO SANITIZATION (RAW LINK) <<<
                           raw_link = match.get("link") or match.get("url") or match.get("stream_url") or match.get("hls") or match.get("mpd") or ""
                           link = raw_link.strip()
                           if not link: continue
@@ -254,17 +271,17 @@ jobs:
                           cookie = match.get("cookie") or match.get("cookies") or ""
                           current_ua = match.get("user_agent") or DEFAULT_UA
 
-                          # Detect Provider
-                          is_jio = "cdn.jio.com" in link 
+                          is_jio = "jio" in link.lower() or "cdn.jio" in link.lower()
                           is_zee = "zee5.com" in link
 
-                          # >>> FORCE APPLY TOKEN & COOKIE <<<
+                          # >>> TOKEN LOGIC: Append Token to URL AND Cookie <<<
                           if is_jio:
-                              if ".mpd" in link:
-                                  link = link.split(".mpd")[0] + ".mpd"
-                              
                               if jio_token:
-                                  link = f"{link}?{jio_token}"
+                                  # Add Token to Link
+                                  separator = "&" if "?" in link else "?"
+                                  link = f"{link}{separator}{jio_token}"
+                                  
+                                  # Add Token to Cookie Variable
                                   cookie = jio_token
                               
                               drm_scheme = "clearkey"
@@ -273,22 +290,6 @@ jobs:
                               cookie = None
                               if drm_license and not drm_scheme:
                                   drm_scheme = "com.widevine.alpha"
-
-                          # >>> NAME CLEANING (Remove "Hindi") <<<
-                          clean_name = re.sub(r'\s*Hindi\s*', '', name, flags=re.IGNORECASE).strip()
-
-                          # >>> RETAIN EXISTING DATA LOGIC <<<
-                          norm_clean = normalize_name(clean_name)
-                          norm_target = normalize_name(name)
-                          
-                          # Check clean name first (e.g. "Nick")
-                          if norm_clean in existing_data:
-                              if 'id' in existing_data[norm_clean]: final_id = existing_data[norm_clean]['id']
-                              if 'logo' in existing_data[norm_clean]: final_logo = existing_data[norm_clean]['logo']
-                          # Check raw target name second (e.g. "Nick Hindi")
-                          elif norm_target in existing_data:
-                              if 'id' in existing_data[norm_target]: final_id = existing_data[norm_target]['id']
-                              if 'logo' in existing_data[norm_target]: final_logo = existing_data[norm_target]['logo']
 
                           # Build Output
                           extinf_parts = ["#EXTINF:-1"]
@@ -334,9 +335,13 @@ jobs:
                   pre_content = content.split(start_marker)[0]
                   post_content = content.split(end_marker)[1]
                   
+                  # Force commit by changing timestamp
+                  timestamp_line = f"# Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
+                  
                   new_content = (
                       pre_content + 
                       start_marker + "\n" + 
+                      timestamp_line + "\n" + 
                       "\n".join(new_playlist_lines) + "\n" + 
                       end_marker + 
                       post_content
@@ -362,9 +367,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          if git diff --cached --quiet; then
-            echo "➡️ No changes detected"
-            exit 0
-          fi
-          git commit -m "✅ Auto-update playlist in index.html"
+          git commit -m "✅ Auto-update playlist in index.html" || echo "No changes to commit"
           git push origin main
