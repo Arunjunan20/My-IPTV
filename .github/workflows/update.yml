@@ -43,6 +43,8 @@ jobs:
           file_name = os.getenv("FILE_NAME", "index.html")
           
           # Source URLs
+          # Priority 0: Hotstar (Jio/Star)
+          # Priority 1: Zee (Tiger629/Joker)
           source_urls = [
               "https://livetv.cb7.pages.dev/hotstar",
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
@@ -161,10 +163,9 @@ jobs:
                       response.raise_for_status()
                       content = response.text
                       
-                      # NUCLEAR SEARCH: Robust Token Extraction
+                      # NUCLEAR SEARCH: Find fresh token in raw text (For Jio)
                       if not jio_token and "__hdnea__=" in content:
                           print(" -> Scanning for fresh Jio Token...")
-                          # Capture token until quote, ampersand, or whitespace
                           token_match = re.search(r'(__hdnea__=[^"&\s]*)', content)
                           if token_match:
                               jio_token = token_match.group(1)
@@ -271,19 +272,17 @@ jobs:
                           cookie = match.get("cookie") or match.get("cookies") or ""
                           current_ua = match.get("user_agent") or DEFAULT_UA
 
+                          # >>> DETECT PROVIDER (Robust) <<<
                           is_jio = "jio" in link.lower() or "cdn.jio" in link.lower()
-                          is_zee = "zee5.com" in link
+                          # Detect Zee if URL contains zee5 OR comes from Source #1 (Tiger629)
+                          is_zee = "zee5.com" in link.lower() or match.get('source_priority') == 1
 
-                          # >>> TOKEN LOGIC: Append Token to URL AND Cookie <<<
+                          # >>> TOKEN & HEADER LOGIC <<<
                           if is_jio:
                               if jio_token:
-                                  # Add Token to Link
                                   separator = "&" if "?" in link else "?"
                                   link = f"{link}{separator}{jio_token}"
-                                  
-                                  # Add Token to Cookie Variable
                                   cookie = jio_token
-                              
                               drm_scheme = "clearkey"
                           
                           elif is_zee:
@@ -311,6 +310,7 @@ jobs:
                               clean_cookie = cookie.replace('"', '\\"')
                               new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
                           elif is_zee:
+                              # Force Referer for ALL channels from the Zee source
                               new_playlist_lines.append('#EXTHTTP:{"Referer":"https://www.zee5.com/"}')
                           
                           new_playlist_lines.append(link)
@@ -335,7 +335,6 @@ jobs:
                   pre_content = content.split(start_marker)[0]
                   post_content = content.split(end_marker)[1]
                   
-                  # Force commit by changing timestamp
                   timestamp_line = f"# Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
                   
                   new_content = (
