@@ -44,7 +44,9 @@ jobs:
           
           # Source URLs
           source_urls = [
-              "https://livetv.cb7.pages.dev/hotstar"
+              "https://livetv-cb7.pages.dev/hotstar",
+              "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
+
           ]
 
           # Categories
