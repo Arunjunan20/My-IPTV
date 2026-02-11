@@ -42,8 +42,7 @@ jobs:
           
           # Source URLs (Top = Highest Priority)
           source_urls = [
-              "https://raw.githubusercontent.com/amit-654584/jtv/refs/heads/main/jtv.m3u",
-              "https://jtvplus.streamflex.workers.dev/JTVPLUSONLY.m3u",
+              "https://livetv.cb7.pages.dev/hotstar",
               "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           ]
 
