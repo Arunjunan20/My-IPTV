@@ -56,7 +56,7 @@ jobs:
           except Exception as e:
               print(f" -> Error fetching Jio source: {e}")
 
-          # 2. FETCH ZEE TOKEN (Strictly looking for hdntl=)
+          # 2. FETCH ZEE TOKEN
           print("\n2. Fetching Zee token...")
           zee_token = None
           try:
@@ -119,9 +119,10 @@ jobs:
                       updated_jio += 1
                       continue
                       
-                  # UPDATE ZEE5 .M3U8 LINKS
-                  if zee_token and '.m3u8' in stripped and 'hdntl=' in stripped:
-                      # Cut the link exactly at .m3u8 to remove the old token
+                  # >>> FIXED: UPDATE ZEE5 .M3U8 LINKS <<<
+                  # Now matches if it has .m3u8 AND contains "zee5" OR "hdntl="
+                  if zee_token and '.m3u8' in stripped and ('zee5' in stripped.lower() or 'hdntl=' in stripped.lower()):
+                      # Cut the link exactly at .m3u8 to remove any old token
                       base_link = stripped.split('.m3u8')[0] + '.m3u8'
                       new_lines.append(f'{base_link}?{zee_token}\n')
                       updated_zee += 1
