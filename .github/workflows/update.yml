@@ -56,7 +56,7 @@ jobs:
           except Exception as e:
               print(f" -> Error fetching Jio source: {e}")
 
-          # 2. FETCH ZEE TOKEN
+          # 2. FETCH ZEE TOKEN (Strictly looking for hdntl=)
           print("\n2. Fetching Zee token...")
           zee_token = None
           try:
@@ -107,7 +107,7 @@ jobs:
               
               # If we are INSIDE the markers, apply the logic
               if in_auto_block:
-                  # DELETE JIO COOKIE HEADER (Safely ignores Zee Referers)
+                  # DELETE JIO COOKIE HEADER
                   if stripped.startswith('#EXTHTTP:') and '"cookie"' in stripped.lower() and '__hdnea__' in stripped:
                       removed_cookies += 1
                       continue 
