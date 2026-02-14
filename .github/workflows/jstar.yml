@@ -1,9 +1,9 @@
-name: Update Playlist Cookies
+name: Update JioStar Playlist
 
 on:
   schedule:
-    - cron: '0 */2 * * *' # Runs automatically every 6 hours
-  workflow_dispatch: # Allows you to run it manually from the Actions tab
+    - cron: '0 */3 * * *' # Refreshes every 3 hours to keep Hotstar tokens active
+  workflow_dispatch:
 
 jobs:
   update-playlist:
@@ -20,58 +20,70 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Extract Cookie and Update Playlist
+      - name: Process Jio and Hotstar Updates
         run: |
           python <<EOF
           import requests
           import re
           import os
 
-          # 1. Fetch cookie from your worker
-          worker_url = "https://raw.githubusercontent.com/vaathala00/jo/main/stream.json"
+          m3u_file = "jiostar.m3u"
+          jio_worker = "https://jtv.pfy.workers.dev"
+          hotstar_worker = "https://livetv.panguplay.workers.dev/hotstar?uid=vaathala"
+
           try:
-              response = requests.get(worker_url, timeout=15)
-              # Search for the __hdnea__ value in the worker response
-              match = re.search(r'__hdnea__=([^"\'\s&]+)', response.text)
-              if not match:
-                  print("Error: Could not find __hdnea__ cookie in worker response.")
-                  exit(1)
+              # 1. Fetch Jio Cookie
+              jio_res = requests.get(jio_worker, timeout=15)
+              jio_match = re.search(r'__hdnea__=([^"\'\s&]+)', jio_res.text)
+              jio_token = f"__hdnea__={jio_match.group(1)}" if jio_match else None
               
-              cookie_val = match.group(1)
-              token_str = f"__hdnea__={cookie_val}"
-              print(f"Successfully extracted token: {token_str}")
+              # 2. Fetch Hotstar Data
+              hs_res = requests.get(hotstar_worker, timeout=20)
+              hs_text = hs_res.text
+              # Assuming a global token for Hotstar from the worker text
+              hs_match = re.search(r'hdntl=exp=[^&"\'\s]+', hs_text)
+              hs_token = hs_match.group(0) if hs_match else None
 
-              # 2. Open the playlist file
-              m3u_file = "jiostar.m3u"
               if not os.path.exists(m3u_file):
-                  print(f"Error: {m3u_file} not found.")
+                  print(f"Error: {m3u_file} not found")
                   exit(1)
 
-              with open(m3u_file, 'r') as f:
+              with open(m3u_file, 'r', encoding='utf-8') as f:
                   lines = f.readlines()
 
-              # 3. Process lines to update links
               updated_lines = []
-              for line in lines:
+              for i, line in enumerate(lines):
                   line = line.strip()
-                  # Target links ending in .mpd or .m3u8
-                  if line.startswith("http") and (line.endswith(".mpd") or ".mpd?" in line or line.endswith(".m3u8") or ".m3u8?" in line):
-                      # Remove existing __hdnea__ parameter if present to avoid duplicates
+                  
+                  # --- HANDLE HOTSTAR LINES ---
+                  if "#EXTHTTP" in line and "hdntl" in line and hs_token:
+                      # Update the header cookie
+                      line = re.sub(r'hdntl=exp=[^"]+', hs_token, line)
+                      updated_lines.append(line)
+                  
+                  elif "hotstar.com" in line and hs_token:
+                      # Update the link parameter
+                      line = re.sub(r'hdntl=exp=[^&|]+', hs_token, line)
+                      updated_lines.append(line)
+
+                  # --- HANDLE JIO LINES ---
+                  elif "jiotvmblive.cdn.jio.com" in line and jio_token:
+                      # Clean existing token and append fresh one
                       clean_link = re.sub(r'([?&])__hdnea__=[^&]*', '', line)
-                      # Append the new token
-                      separator = "&" if "?" in clean_link else "?"
-                      new_line = f"{clean_link}{separator}{token_str}"
-                      updated_lines.append(new_line)
+                      sep = "&" if "?" in clean_link else "?"
+                      updated_lines.append(f"{clean_link}{sep}{jio_token}")
+
                   else:
                       updated_lines.append(line)
 
-              # 4. Save the updated content back to the file
-              with open(m3u_file, 'w') as f:
+              # Save results back to the same file
+              with open(m3u_file, 'w', encoding='utf-8') as f:
                   f.write("\n".join(updated_lines) + "\n")
-              print("Playlist updated successfully.")
+              
+              print("Successfully updated Jio and Hotstar tokens in jiostar.m3u")
 
           except Exception as e:
-              print(f"An unexpected error occurred: {e}")
+              print(f"Error: {e}")
               exit(1)
           EOF
 
@@ -80,5 +92,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add jiostar.m3u
-          git commit -m "Automated update: Refreshed playlist cookies" || echo "No changes to commit"
+          git commit -m "Automated update: Refreshed Jio and Hotstar tokens" || echo "No changes"
           git push
