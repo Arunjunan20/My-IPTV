@@ -35,7 +35,7 @@ jobs:
 
           FILE_NAME = "index.html"
           JIO_SOURCE = "https://livetv-cb7.pages.dev/hotstar"
-          ZEE_SOURCE = "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
+          ZEE_SOURCE = "https://join-vaathala1-for-more.vodep39240327.workers.dev/zee5.m3u"
           
           headers = {
               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
