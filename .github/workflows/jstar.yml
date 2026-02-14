@@ -1,0 +1,84 @@
+name: Update Playlist Cookies
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs automatically every 6 hours
+  workflow_dispatch: # Allows you to run it manually from the Actions tab
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Extract Cookie and Update Playlist
+        run: |
+          python <<EOF
+          import requests
+          import re
+          import os
+
+          # 1. Fetch cookie from your worker
+          worker_url = "https://jtv.pfy.workers.dev"
+          try:
+              response = requests.get(worker_url, timeout=15)
+              # Search for the __hdnea__ value in the worker response
+              match = re.search(r'__hdnea__=([^"\'\s&]+)', response.text)
+              if not match:
+                  print("Error: Could not find __hdnea__ cookie in worker response.")
+                  exit(1)
+              
+              cookie_val = match.group(1)
+              token_str = f"__hdnea__={cookie_val}"
+              print(f"Successfully extracted token: {token_str}")
+
+              # 2. Open the playlist file
+              m3u_file = "jiostar.m3u"
+              if not os.path.exists(m3u_file):
+                  print(f"Error: {m3u_file} not found.")
+                  exit(1)
+
+              with open(m3u_file, 'r') as f:
+                  lines = f.readlines()
+
+              # 3. Process lines to update links
+              updated_lines = []
+              for line in lines:
+                  line = line.strip()
+                  # Target links ending in .mpd or .m3u8
+                  if line.startswith("http") and (line.endswith(".mpd") or ".mpd?" in line or line.endswith(".m3u8") or ".m3u8?" in line):
+                      # Remove existing __hdnea__ parameter if present to avoid duplicates
+                      clean_link = re.sub(r'([?&])__hdnea__=[^&]*', '', line)
+                      # Append the new token
+                      separator = "&" if "?" in clean_link else "?"
+                      new_line = f"{clean_link}{separator}{token_str}"
+                      updated_lines.append(new_line)
+                  else:
+                      updated_lines.append(line)
+
+              # 4. Save the updated content back to the file
+              with open(m3u_file, 'w') as f:
+                  f.write("\n".join(updated_lines) + "\n")
+              print("Playlist updated successfully.")
+
+          except Exception as e:
+              print(f"An unexpected error occurred: {e}")
+              exit(1)
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add jiostar.m3u
+          git commit -m "Automated update: Refreshed playlist cookies" || echo "No changes to commit"
+          git push
