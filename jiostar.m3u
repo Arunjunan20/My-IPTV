@@ -1742,7 +1742,7 @@ https://jiotvmblive.cdn.jio.com/bpk-tv/Sun_TV_HD_MOB/WDVLive/index.mpd?__hdnea__
 #EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0
 https://jiotvmblive.cdn.jio.com/bpk-tv/KTV_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1771054562~exp=1771140962~acl=/*~hmac=665694471cff75cc5ba91b267b8057824842f5b3e8fdc7b52dee479e35a734ff
 
-#EXTINF:-1 tvg-id="368" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Vijay_HD.png" group-title="Tamil",Star Vijay HD
+#EXTINF:-1 tvg-id="368" tvg-logo="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Vijay.png" group-title="Tamil",Star Vijay HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=849d6b062b645abea937ec7f2b6b1686:1f65503420b88d11a16d4a4eacd95f0f
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
