@@ -27,332 +27,121 @@ jobs:
         run: pip install requests
 
       - name: Run Update Script
-        env:
-          FILE_NAME: 'index.html'
         run: |
           cat <<EOF > update_script.py
           import requests
-          import json
-          import os
           import re
           import sys
 
-          # --- CONFIGURATION ---
-          file_name = os.getenv("FILE_NAME", "index.html")
+          FILE_NAME = "index.html"
+          JIO_SOURCE = "https://livetv-cb7.pages.dev/hotstar"
+          ZEE_SOURCE = "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
           
-          # Source URLs (Top = Highest Priority)
-          source_urls = [
-              "https://livetv-cb7.pages.dev/hotstar",
-              "https://raw.githubusercontent.com/tiger629/m3u/refs/heads/main/joker.m3u"
-          ]
-
-          # Categories
-          categories = {
-              "Tamil": [
-                  "Sun TV HD", "Star Vijay HD", "Colors Tamil HD", "Zee Tamil HD", "KTV HD",
-                  "Sun Music HD","Kalaignar TV", "Jaya TV HD", "Raj TV", "Adithya TV","Sun life"
-              ],
-              "Movies": [
-                  "Zee Thirai HD", "Vijay Super HD", "Vijay Takkar", "J Movies", "Raj Digital Plus",
-                  "Star Movies HD", "Star Movies Select HD", 
-              ],
-              "Music": [
-                   "Raj Musix", "Jaya Max"
-              ],
-              "Entertainment": [
-                  "Zee Tamil HD APAC","Colors Infinity HD", "Zee Café HD", "&Flix HD",
-                  "&Prive HD", "MTV HD", "Disney International HD", "Nick HD+"
-              ],
-              "News": [
-                  "Sun News", "News7 Tamil", "Thanthi TV"
-              ],
-              "Sports": [
-                  "Star Sports HD1", "Star Sports HD2", "Star Sports 3", 
-                  "Star Sports 1 Tamil HD", "Star Sports 2 Tamil HD"
-              ],
-              "Kids": [
-                  "Nick Hindi", "Sonic Hindi", "Pogo Hindi",
-                  "Cartoon Network HD+ Hindi", "Chutti TV", "Disney Channel", "Disney Junior",
-                  "Hungama", "Super Hungama", "Nick Jr", "Sony Yay Hindi" 
-              ],
-              "Infotainment": [
-                  "History TV18 HD", "Discovery HD Hindi", "National Geographic HD", "Nat Geo Wild HD",
-                  "Animal Planet HD Hindi", "Sony BBC Earth HD","Zee Zest HD"
-              ]
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
           }
+          
+          # 1. FETCH JIO TOKEN
+          print("1. Fetching Jio token...")
+          jio_token = None
+          try:
+              jio_resp = requests.get(JIO_SOURCE, headers=headers, timeout=15)
+              jio_resp.raise_for_status()
+              jio_match = re.search(r'(__hdnea__=[^"&\s]*)', jio_resp.text)
+              if jio_match:
+                  jio_token = jio_match.group(1)
+                  print(f" -> Found Jio Token: {jio_token[:25]}...")
+              else:
+                  print(" -> WARNING: No Jio token found.")
+          except Exception as e:
+              print(f" -> Error fetching Jio source: {e}")
 
-          # --- HELPER FUNCTIONS ---
-          def normalize_name(name):
-              if not name: return ""
-              return name.lower().replace(" ", "").replace("_", "").replace("-", "").strip()
+          # 2. FETCH ZEE TOKEN
+          print("\n2. Fetching Zee token...")
+          zee_token = None
+          try:
+              zee_resp = requests.get(ZEE_SOURCE, headers=headers, timeout=15)
+              zee_resp.raise_for_status()
+              zee_match = re.search(r'(hdntl=[^"\'\s]*)', zee_resp.text)
+              if zee_match:
+                  zee_token = zee_match.group(1)
+                  print(f" -> Found Zee Token: {zee_token[:25]}...")
+              else:
+                  print(" -> WARNING: No Zee token found.")
+          except Exception as e:
+              print(f" -> Error fetching Zee source: {e}")
 
-          # --- PARSER ---
-          def parse_m3u(content):
-              items = []
-              lines = content.splitlines()
-              current_item = {}
-              for line in lines:
-                  line = line.strip()
-                  if line.startswith("#EXTINF"):
-                      current_item = {} 
-                      parts = line.rsplit(',', 1)
-                      if len(parts) == 2:
-                          current_item['name'] = parts[1].strip()
-                      id_match = re.search(r'tvg-id="([^"]+)"', line)
-                      if id_match: current_item['tvg_id'] = id_match.group(1)
-                      logo_match = re.search(r'tvg-logo="([^"]+)"', line)
-                      if logo_match: current_item['tvg_logo'] = logo_match.group(1)
+          if not jio_token and not zee_token:
+              print("CRITICAL ERROR: Neither token could be fetched. Aborting to protect playlist.")
+              sys.exit(1)
 
-                  elif line.startswith("#EXTVLCOPT"):
-                      if "http-user-agent=" in line:
-                          ua = line.split("http-user-agent=", 1)[1].strip()
-                          current_item['user_agent'] = ua
-                  
-                  elif line.startswith("#KODIPROP"):
-                      if "license_key=" in line:
-                          key = line.split("license_key=", 1)[1].strip()
-                          current_item['drmLicense'] = key
-                      elif "license_type=" in line:
-                          type_val = line.split("license_type=", 1)[1].strip()
-                          current_item['drmScheme'] = type_val
-                  
-                  elif line.startswith("#EXTHTTP"):
-                      if "cookie" in line:
-                          try:
-                              cookie_match = re.search(r'"cookie"\s*:\s*"([^"]+)"', line)
-                              if cookie_match: current_item['cookie'] = cookie_match.group(1)
-                          except: pass
-                      if "User-Agent" in line:
-                          try:
-                              ua_match = re.search(r'"User-Agent"\s*:\s*"([^"]+)"', line)
-                              if ua_match: current_item['user_agent'] = ua_match.group(1)
-                          except: pass
+          # 3. UPDATE FILE (ONLY WITHIN MARKERS)
+          print(f"\n3. Updating {FILE_NAME} within markers...")
+          try:
+              with open(FILE_NAME, "r", encoding="utf-8") as f:
+                  lines = f.readlines()
+          except Exception as e:
+              print(f"Error reading file: {e}")
+              sys.exit(1)
 
-                  elif line and not line.startswith("#"):
-                      if 'name' in current_item:
-                          current_item['url'] = line
-                          items.append(current_item)
-                          current_item = {} 
-              return items
+          new_lines = []
+          updated_jio = 0
+          updated_zee = 0
+          removed_cookies = 0
+          in_auto_block = False
 
-          # --- MAIN LOGIC ---
-          def main():
-              all_items = []
-              jio_token = None
+          for line in lines:
+              stripped = line.strip()
               
-              print("Phase 1: Harvesting Channels & Scanning for Tokens...")
-              
-              for priority_index, url in enumerate(source_urls):
-                  try:
-                      print(f"Downloading Source {priority_index + 1}: {url}...")
-                      response = requests.get(url, timeout=30)
-                      response.raise_for_status()
-                      content = response.text
-                      
-                      # NUCLEAR SEARCH: Scan raw text for token
-                      if not jio_token and "__hdnea__=" in content:
-                          print(" -> Found potential token in raw text...")
-                          token_match = re.search(r'(__hdnea__=[^";&]*)', content)
-                          if token_match:
-                              jio_token = token_match.group(1)
-                              print(f" -> GLOBAL TOKEN SECURED: {jio_token[:20]}...")
-
-                      # Parse
-                      parsed = []
-                      if content.strip().startswith("#EXTM3U") or ".m3u" in url or "hotstar" in url:
-                          parsed = parse_m3u(content)
-                      else:
-                          try:
-                              data = json.loads(content)
-                              if isinstance(data, dict):
-                                  if "channels" in data: parsed = data["channels"]
-                                  elif "data" in data: parsed = data["data"]
-                                  elif "list" in data: parsed = data["list"]
-                                  else: parsed = [data]
-                              elif isinstance(data, list): parsed = data
-                          except json.JSONDecodeError: pass
-                      
-                      if parsed:
-                          # Tag items with priority
-                          for item in parsed:
-                              item['source_priority'] = priority_index
-                          
-                          all_items.extend(parsed)
-                          print(f" -> Added {len(parsed)} channels from Source {priority_index + 1}.")
-                          
-                  except Exception as e:
-                      print(f"Error fetching {url}: {e}")
-
-              if not jio_token:
-                  print("WARNING: No Jio Token found. Jio channels may fail.")
-
-              # 3. Harvest EXISTING Data (Logos AND IDs) to retain them
-              existing_data = {}
-              if os.path.exists(file_name):
-                  try:
-                      with open(file_name, "r", encoding="utf-8") as f:
-                          for line in f:
-                              if line.strip().startswith("#EXTINF"):
-                                  parts = line.rsplit(',', 1)
-                                  if len(parts) == 2:
-                                      ch_name = parts[1].strip()
-                                      norm_key = normalize_name(ch_name)
-                                      
-                                      existing_data[norm_key] = {}
-                                      
-                                      # Capture Logo
-                                      logo_match = re.search(r'tvg-logo=["\']([^"\']+)["\']', line)
-                                      if logo_match:
-                                          existing_data[norm_key]['logo'] = logo_match.group(1)
-                                          
-                                      # Capture ID
-                                      id_match = re.search(r'tvg-id=["\']([^"\']+)["\']', line)
-                                      if id_match:
-                                          existing_data[norm_key]['id'] = id_match.group(1)
-                  except Exception: pass
-
-              # 4. Generate Playlist
-              print("Phase 3: Generating Playlist...")
-              new_playlist_lines = []
-              seen_channels = set()
-              DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 ygx/69.1 Safari/537.36"
-
-              for category, targets in categories.items():
-                  for target_name in targets:
-                      if target_name.lower() in seen_channels:
-                          continue
-
-                      matches = [
-                          item for item in all_items 
-                          if normalize_name(item.get("name") or item.get("title")) == normalize_name(target_name)
-                      ]
-                      
-                      if matches:
-                          # >>> MULTI-LEVEL SORTING <<<
-                          matches.sort(key=lambda x: (
-                              x.get('source_priority', 99),
-                              0 if "BTS" in (x.get("link") or x.get("url") or "") else 1,
-                              (x.get("link") or x.get("url") or "").count("_")
-                          ))
-                          match = matches[0]
-                          
-                          name = target_name
-                          
-                          # >>> INITIALIZE WITH SOURCE VALUES <<<
-                          final_id = match.get("tvg_id") or match.get("tvgId") or match.get("id") or ""
-                          final_logo = match.get("tvg_logo") or match.get("logo") or ""
-                          
-                          drm_scheme = match.get("drmScheme") or match.get("drm_scheme") or match.get("drm") or ""
-                          drm_license = match.get("drmLicense") or match.get("license") or ""
-                          
-                          # >>> NO SANITIZATION (RAW LINK) <<<
-                          raw_link = match.get("link") or match.get("url") or match.get("stream_url") or match.get("hls") or match.get("mpd") or ""
-                          link = raw_link.strip()
-                          if not link: continue
-
-                          seen_channels.add(target_name.lower())
-                          cookie = match.get("cookie") or match.get("cookies") or ""
-                          current_ua = match.get("user_agent") or DEFAULT_UA
-
-                          # Detect Provider
-                          is_jio = "cdn.jio.com" in link 
-                          is_zee = "zee5.com" in link
-
-                          # >>> FORCE APPLY TOKEN & COOKIE <<<
-                          if is_jio:
-                              if ".mpd" in link:
-                                  link = link.split(".mpd")[0] + ".mpd"
-                              
-                              if jio_token:
-                                  link = f"{link}?{jio_token}"
-                                  cookie = jio_token
-                              
-                              drm_scheme = "clearkey"
-                          
-                          elif is_zee:
-                              cookie = None
-                              if drm_license and not drm_scheme:
-                                  drm_scheme = "com.widevine.alpha"
-
-                          # >>> NAME CLEANING (Remove "Hindi") <<<
-                          clean_name = re.sub(r'\s*Hindi\s*', '', name, flags=re.IGNORECASE).strip()
-
-                          # >>> RETAIN EXISTING DATA LOGIC <<<
-                          norm_clean = normalize_name(clean_name)
-                          norm_target = normalize_name(name)
-                          
-                          # Check clean name first (e.g. "Nick")
-                          if norm_clean in existing_data:
-                              if 'id' in existing_data[norm_clean]: final_id = existing_data[norm_clean]['id']
-                              if 'logo' in existing_data[norm_clean]: final_logo = existing_data[norm_clean]['logo']
-                          # Check raw target name second (e.g. "Nick Hindi")
-                          elif norm_target in existing_data:
-                              if 'id' in existing_data[norm_target]: final_id = existing_data[norm_target]['id']
-                              if 'logo' in existing_data[norm_target]: final_logo = existing_data[norm_target]['logo']
-
-                          # Build Output
-                          extinf_parts = ["#EXTINF:-1"]
-                          if final_id: extinf_parts.append(f'tvg-id="{final_id}"')
-                          extinf_parts.append(f'group-title="{category}"')
-                          if final_logo: extinf_parts.append(f'tvg-logo="{final_logo}"')
-                          
-                          header = " ".join(extinf_parts) + "," + clean_name
-                          new_playlist_lines.append(header)
-
-                          if drm_license:
-                              if not drm_scheme: drm_scheme = "clearkey"
-                              new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_type={drm_scheme}")
-                              new_playlist_lines.append(f"#KODIPROP:inputstream.adaptive.license_key={drm_license}")
-                          
-                          new_playlist_lines.append(f"#EXTVLCOPT:http-user-agent={current_ua}")
-
-                          if cookie:
-                              clean_cookie = cookie.replace('"', '\\"')
-                              new_playlist_lines.append(f'#EXTHTTP:{{"cookie":"{clean_cookie}"}}')
-                          elif is_zee:
-                              new_playlist_lines.append('#EXTHTTP:{"Referer":"https://www.zee5.com/"}')
-                          
-                          new_playlist_lines.append(link)
-                          new_playlist_lines.append("")
-
-              # 5. Write to File
-              if len(new_playlist_lines) < 5:
-                  print("CRITICAL ERROR: No channels found. Aborting.")
-                  sys.exit(1)
-
-              start_marker = "# >>> JIO_AUTO_START"
-              end_marker = "# >>> JIO_AUTO_END"
-              
-              try:
-                  with open(file_name, "r", encoding="utf-8") as f:
-                      content = f.read()
-
-                  if start_marker not in content or end_marker not in content:
-                      print(f"Error: Markers not found in {file_name}")
-                      sys.exit(1)
-
-                  pre_content = content.split(start_marker)[0]
-                  post_content = content.split(end_marker)[1]
+              # Turn ON auto-updating when we hit the START marker
+              if stripped == "# >>> JIO_AUTO_START":
+                  in_auto_block = True
+                  new_lines.append(line)
+                  continue
                   
-                  new_content = (
-                      pre_content + 
-                      start_marker + "\n" + 
-                      "\n".join(new_playlist_lines) + "\n" + 
-                      end_marker + 
-                      post_content
-                  )
-                  
-                  with open(file_name, "w", encoding="utf-8") as f:
-                      f.write(new_content)
+              # Turn OFF auto-updating when we hit the END marker
+              if stripped == "# >>> JIO_AUTO_END":
+                  in_auto_block = False
+                  new_lines.append(line)
+                  continue
+              
+              # If we are INSIDE the markers, apply the logic
+              if in_auto_block:
+                  # DELETE JIO COOKIE HEADER (Safely ignores Zee Referers)
+                  if stripped.startswith('#EXTHTTP:') and '"cookie"' in stripped.lower() and '__hdnea__' in stripped:
+                      removed_cookies += 1
+                      continue 
                       
-                  print(f"Success! Updated {file_name} with {len(new_playlist_lines)//6} channels.")
+                  # UPDATE JIO .MPD LINKS
+                  if jio_token and '.mpd' in stripped and ('__hdnea__' in stripped or 'jio' in stripped.lower() or 'hotstar' in stripped.lower()):
+                      base_link = stripped.split('.mpd')[0] + '.mpd'
+                      new_lines.append(f'{base_link}?{jio_token}\n')
+                      updated_jio += 1
+                      continue
+                      
+                  # UPDATE ZEE5 .M3U8 LINKS
+                  if zee_token and '.m3u8' in stripped and 'hdntl=' in stripped:
+                      # Cut the link exactly at .m3u8 to remove the old token
+                      base_link = stripped.split('.m3u8')[0] + '.m3u8'
+                      new_lines.append(f'{base_link}?{zee_token}\n')
+                      updated_zee += 1
+                      continue
+                      
+                  # LEAVE UNMATCHED LINES INSIDE THE BLOCK UNTOUCHED
+                  new_lines.append(line)
+              
+              # If we are OUTSIDE the markers, do absolutely nothing, just keep the line
+              else:
+                  new_lines.append(line)
 
-              except FileNotFoundError:
-                  print(f"Error: File {file_name} not found.")
-                  sys.exit(1)
+          # Write changes back to file
+          with open(FILE_NAME, "w", encoding="utf-8") as f:
+              f.writelines(new_lines)
 
-          if __name__ == "__main__":
-              main()
+          print(f"\nSuccess!")
+          print(f" -> Updated {updated_jio} Jio links.")
+          print(f" -> Updated {updated_zee} Zee links.")
+          print(f" -> Removed {removed_cookies} obsolete cookie lines.")
           EOF
           
           python update_script.py
@@ -363,8 +152,8 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then
-            echo "➡️ No changes detected"
+            echo "➡️ No changes detected (Tokens are the same)"
             exit 0
           fi
-          git commit -m "✅ Auto-update playlist in index.html"
+          git commit -m "✅ Auto-update Jio and Zee Tokens"
           git push origin main
