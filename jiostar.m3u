@@ -39,7 +39,7 @@ https://livetv.hotstar.com/mp2/gec-india/60b51adb7eae4ae492e6ba6c156a1efe/index_
 #EXTHTTP:{"cookie":"hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
 https://jcevents.hotstar.com/bpk-tv/JC_ColorsTamilHD/JCHLS/JC_ColorsTamilHD.m3u8?%7CCookie=hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
 
-#EXTINF:-1 tvg-logo="https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/StarSports2Tamil_Transparent_495e7bfa-b0b9-4055-a22e-56f3507ca469.png" group-title="Hotstar Live",Star Sports 2 Tamil
+#EXTINF:-1 tvg-logo="https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/StarSports2Tamil_Transparent_495e7bfa-b0b9-4055-a22e-56f3507ca469.png" group-title="Hotstar",Star Sports 2 Tamil
 #EXTHTTP:{"cookie":"hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
 https://jcevents.hotstar.com/bpk-tv/4db6f833701e78ae4443cb268020f03b/Fallback/4db6f833701e78ae4443cb268020f03b.m3u8?%7CCookie=hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
 
@@ -55,7 +55,7 @@ https://livetv-push.hotstar.com/dash/live/2002464/sshd1livetvwv/master.mpd?%7CCo
 #EXTHTTP:{"cookie":"hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
 https://livetv-push.hotstar.com/dash/live/2002465/sshd2livetvwv/master.mpd?%7CCookie=hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
 
-#EXTINF:-1 tvg-logo="https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7409/567409-h" group-title="Entertainment",Star Vijay
+#EXTINF:-1 tvg-logo="https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7409/567409-h" group-title="Hotstar",Star Vijay
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=652811d06b3545a3a1f20c1b03700000:d3db194166ee44b3b5c9c719aa9cdd63
 #EXTHTTP:{"cookie":"hdntl=exp=1771213056~acl=%2f*~id=a2cbd69c5e3a92749f7c47e12966ef77~data=hdntl~hmac=163f7f68a8ac1fdab267d7e6d4dc2ecc06a0e44fc25b1bb39a8370f37d46c8ff","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
