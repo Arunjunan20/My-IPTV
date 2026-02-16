@@ -31,18 +31,26 @@ jobs:
           jio_worker = "https://jtv.pfy.workers.dev"
           hotstar_worker = "https://livetv.panguplay.workers.dev/hotstar?uid=vaathala"
 
+          # IMPORTANT: Added headers to prevent Cloudflare from blocking the request
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+
           try:
               # 1. Fetch Jio Cookie
-              jio_res = requests.get(jio_worker, timeout=15)
+              jio_res = requests.get(jio_worker, headers=headers, timeout=15)
               jio_match = re.search(r'__hdnea__=([^"\'\s&]+)', jio_res.text)
               jio_token = f"__hdnea__={jio_match.group(1)}" if jio_match else None
               
               # 2. Fetch Hotstar Data
-              hs_res = requests.get(hotstar_worker, timeout=20)
+              hs_res = requests.get(hotstar_worker, headers=headers, timeout=20)
               hs_text = hs_res.text
-              # Assuming a global token for Hotstar from the worker text
+              # Extract Hotstar token
               hs_match = re.search(r'hdntl=exp=[^&"\'\s]+', hs_text)
               hs_token = hs_match.group(0) if hs_match else None
+
+              if not hs_token:
+                  print("Warning: Could not fetch Hotstar token. Check worker URL.")
 
               if not os.path.exists(m3u_file):
                   print(f"Error: {m3u_file} not found")
@@ -62,8 +70,13 @@ jobs:
                       updated_lines.append(line)
                   
                   elif "hotstar.com" in line and hs_token:
-                      # Update the link parameter
-                      line = re.sub(r'hdntl=exp=[^&|]+', hs_token, line)
+                      # Check if token exists in link to replace, otherwise append
+                      if "hdntl=exp=" in line:
+                          line = re.sub(r'hdntl=exp=[^&|]+', hs_token, line)
+                      else:
+                          # If appending to a fresh master.mpd link, safely add the URL encoded cookie
+                          sep = "&" if "?" in line else "?"
+                          line = f"{line}{sep}%7CCookie={hs_token}"
                       updated_lines.append(line)
 
                   # --- HANDLE JIO LINES ---
@@ -97,5 +110,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add jiostar.m3u
-          git commit -m "Automated update: Refreshed Jio and Hotstar tokens" || echo "No changes"
+          # Prevents workflow failure if tokens haven't changed yet
+          git diff --cached --quiet || git commit -m "Automated update: Refreshed Jio and Hotstar tokens"
           git push
