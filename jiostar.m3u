@@ -46,14 +46,14 @@ https://jcevents.hotstar.com/bpk-tv/4db6f833701e78ae4443cb268020f03b/Fallback/4d
 #EXTINF:-1 tvg-logo="https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7430/567430-h" group-title="Hotstar",Star Sports 1 HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=fe7718fbb3fb4ba78c07cc0f578744e6:624e24b1843b459fab0a949609416f0d
-#EXTHTTP:{"cookie":"hdntl=exp=1771291205~acl=%2f*~id=647ee35636dc73047acea64752d65285~data=hdntl~hmac=98a7eeda36a0c9cd9056116da082ae9deaf8ed655dcf2c2b9e2b752ced17c287","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
-https://livetv-push.hotstar.com/dash/live/2002464/sshd1livetvwv/master.mpd?%7CCookie=hdntl=exp=1771291205~acl=%2f*~id=647ee35636dc73047acea64752d65285~data=hdntl~hmac=98a7eeda36a0c9cd9056116da082ae9deaf8ed655dcf2c2b9e2b752ced17c287&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
+#EXTHTTP:{"cookie":"hdntl=exp=1771291215~acl=*sshd1livetv*~id=591a4b9bd05af8b2dce11cc26f5e01ee~data=hdntl~hmac=6fbf7588d45a2a09594b8c272e90e5d43c88cee6c1bc04db422daea60475a0d1","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
+https://livetv-push.hotstar.com/dash/live/2002464/sshd1livetvwv/master.mpd?%7CCookie=hdntl=exp=1771291215~acl=*sshd1livetv*~id=591a4b9bd05af8b2dce11cc26f5e01ee~data=hdntl~hmac=6fbf7588d45a2a09594b8c272e90e5d43c88cee6c1bc04db422daea60475a0d1&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
 
 #EXTINF:-1 tvg-logo="https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7432/567432-h" group-title="Hotstar",Star Sports 2 HD
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=fe7718fbb3fb4ba78c07cc0f578744e6:624e24b1843b459fab0a949609416f0d
-#EXTHTTP:{"cookie":"hdntl=exp=1771291205~acl=%2f*~id=647ee35636dc73047acea64752d65285~data=hdntl~hmac=98a7eeda36a0c9cd9056116da082ae9deaf8ed655dcf2c2b9e2b752ced17c287","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
-https://livetv-push.hotstar.com/dash/live/2002465/sshd2livetvwv/master.mpd?%7CCookie=hdntl=exp=1771291205~acl=%2f*~id=647ee35636dc73047acea64752d65285~data=hdntl~hmac=98a7eeda36a0c9cd9056116da082ae9deaf8ed655dcf2c2b9e2b752ced17c287&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
+#EXTHTTP:{"cookie":"hdntl=exp=1771291287~acl=*sshd2livetv*~id=3fb0612559ba3d8b54a19ef30398ab66~data=hdntl~hmac=9a646b7b9f8075b70b92b6475dc81feb0ca609b55c57956b21676ea54e294709","Origin":"https://www.hotstar.com","Referer":"https://www.hotstar.com/"}
+https://livetv-push.hotstar.com/dash/live/2002465/sshd2livetvwv/master.mpd?%7CCookie=hdntl=exp=1771291287~acl=*sshd2livetv*~id=3fb0612559ba3d8b54a19ef30398ab66~data=hdntl~hmac=9a646b7b9f8075b70b92b6475dc81feb0ca609b55c57956b21676ea54e294709&User-agent=Hotstar;in.startv.hotstar/25.02.24.8.11169%20(Android/15)&Origin=https://www.hotstar.com&Referer=https://www.hotstar.com/
 
 #EXTINF:-1 tvg-logo="https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7409/567409-h" group-title="Hotstar",Star Vijay
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
