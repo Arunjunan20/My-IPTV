@@ -72,7 +72,7 @@ jobs:
                       line = re.sub(r'__hdnea__=[^"}]+', jio_token, line)
                       updated_lines.append(line)
 
-                  elif "cdn.jio.com" in line and jio_token:
+                  elif "jiotvmblive.cdn.jio.com" in line and jio_token:
                       # Clean existing token and append fresh one
                       clean_link = re.sub(r'([?&])__hdnea__=[^&]*', '', line)
                       sep = "&" if "?" in clean_link else "?"
