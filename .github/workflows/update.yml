@@ -87,7 +87,7 @@ jobs:
           new_lines = []
           updated_jio = 0
           updated_zee = 0
-          removed_cookies = 0
+          updated_headers = 0
           in_auto_block = False
 
           for line in lines:
@@ -107,9 +107,13 @@ jobs:
               
               # If we are INSIDE the markers, apply the logic
               if in_auto_block:
-                  # DELETE JIO COOKIE HEADER
-                  if stripped.startswith('#EXTHTTP:') and '"cookie"' in stripped.lower() and '__hdnea__' in stripped:
-                      removed_cookies += 1
+                  
+                  # UPDATE JIO COOKIE HEADER INSTEAD OF DELETING
+                  if "#EXTHTTP" in line and "__hdnea__" in line and jio_token:
+                      # Replace old token with the new one
+                      updated_line = re.sub(r'__hdnea__=[^"}]+', jio_token, line)
+                      new_lines.append(updated_line)
+                      updated_headers += 1
                       continue 
                       
                   # UPDATE JIO .MPD LINKS
@@ -119,10 +123,8 @@ jobs:
                       updated_jio += 1
                       continue
                       
-                  # >>> FIXED: UPDATE ZEE5 .M3U8 LINKS <<<
-                  # Now matches if it has .m3u8 AND contains "zee5" OR "hdntl="
+                  # UPDATE ZEE5 .M3U8 LINKS
                   if zee_token and '.m3u8' in stripped and ('zee5' in stripped.lower() or 'hdntl=' in stripped.lower()):
-                      # Cut the link exactly at .m3u8 to remove any old token
                       base_link = stripped.split('.m3u8')[0] + '.m3u8'
                       new_lines.append(f'{base_link}?{zee_token}\n')
                       updated_zee += 1
@@ -140,9 +142,9 @@ jobs:
               f.writelines(new_lines)
 
           print(f"\nSuccess!")
-          print(f" -> Updated {updated_jio} Jio links.")
+          print(f" -> Updated {updated_headers} Jio #EXTHTTP headers.")
+          print(f" -> Updated {updated_jio} Jio .mpd links.")
           print(f" -> Updated {updated_zee} Zee links.")
-          print(f" -> Removed {removed_cookies} obsolete cookie lines.")
           EOF
           
           python update_script.py
