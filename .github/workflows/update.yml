@@ -106,14 +106,11 @@ jobs:
                   continue
               
               # If we are INSIDE the markers, apply the logic
-              # UPDATE JIO COOKIE HEADER
+              if in_auto_block:
+                  # DELETE JIO COOKIE HEADER
                   if stripped.startswith('#EXTHTTP:') and '"cookie"' in stripped.lower() and '__hdnea__' in stripped:
-                      if jio_token:
-                          # Replace the old cookie value with the new one
-                          line = re.sub(r'__hdnea__=[^"}]+', jio_token, line)
-                          updated_cookies += 1 # Make sure you declare updated_cookies = 0 at the top
-                      new_lines.append(line)
-                      continue
+                      removed_cookies += 1
+                      continue 
                       
                   # UPDATE JIO .MPD LINKS
                   if jio_token and '.mpd' in stripped and ('__hdnea__' in stripped or 'jio' in stripped.lower() or 'hotstar' in stripped.lower()):
