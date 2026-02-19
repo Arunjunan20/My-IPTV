@@ -2,7 +2,7 @@ name: Auto-Update index.html
 
 on:
   schedule:
-    - cron: '0 */2 * * *' # Runs every 2 hours
+    - cron: '0 */1 * * *' # Runs every 1 hours
   workflow_dispatch: # Allows manual run
 
 permissions:
