@@ -29,7 +29,7 @@ jobs:
 
           m3u_file = "jiostar.m3u"
           jio_worker = "https://jtv.pfy.workers.dev"
-          hotstar_worker = "https://livetv.panguplay.workers.dev/hotstar?uid=vaathala"
+          hotstar_worker = "https://voot.vodep39240327.workers.dev?voot.m3u"
 
           try:
               # 1. Fetch Jio Cookie
