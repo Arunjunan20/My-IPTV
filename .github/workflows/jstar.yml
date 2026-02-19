@@ -70,7 +70,7 @@ jobs:
                   if "#EXTHTTP" in line and "__hdnea__" in line and jio_token:
                       # Replace old token with the new one
                       updated_line = re.sub(r'__hdnea__=[^"}]+', jio_token, line)
-                      new_lines.append(updated_line)
+                      updated_lines.append(updated_line)
                       updated_headers += 1
                       continue
 
